@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Founder Mode — Startup Simulation</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3352;
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --green: #43d9ad;
+    --yellow: #ffd166;
+    --red: #ef476f;
+    --text: #e2e8f0;
+    --muted: #8892a4;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; min-height: 100vh; }
+
+  /* SCREENS */
+  .screen { display: none; }
+  .screen.active { display: flex; }
+
+  /* ── INTRO ── */
+  #intro { flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 24px; padding: 32px; }
+  #intro h1 { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  #intro p.sub { color: var(--muted); font-size: 1.1rem; text-align: center; max-width: 480px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+  #setup-form { display: flex; flex-direction: column; gap: 16px; width: 480px; }
+  #setup-form label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  #setup-form input, #setup-form select { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; color: var(--text); font-size: 14px; margin-top: 4px; outline: none; transition: border-color .2s; }
+  #setup-form input:focus, #setup-form select:focus { border-color: var(--accent); }
+  .industry-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 4px; }
+  .industry-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 8px; cursor: pointer; text-align: center; transition: all .2s; font-size: 13px; color: var(--muted); }
+  .industry-btn:hover { border-color: var(--accent); color: var(--text); }
+  .industry-btn.selected { border-color: var(--accent); background: rgba(108,99,255,.15); color: var(--text); }
+  .btn { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 12px 24px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity .2s; }
+  .btn:hover { opacity: .85; }
+  .btn.danger { background: var(--red); }
+  .btn.ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .btn.sm { padding: 6px 14px; font-size: 13px; }
+  .btn.green { background: var(--green); color: #0f1117; }
+
+  /* ── GAME LAYOUT ── */
+  #game { flex-direction: column; min-height: 100vh; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; background: var(--surface); border-bottom: 1px solid var(--border); gap: 16px; flex-wrap: wrap; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .company-name { font-weight: 700; font-size: 1rem; }
+  .turn-badge { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 14px; font-size: 12px; color: var(--muted); }
+  .metrics-bar { display: flex; gap: 20px; flex-wrap: wrap; }
+  .metric { display: flex; flex-direction: column; align-items: flex-end; }
+  .metric-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+  .metric-value { font-size: 15px; font-weight: 700; }
+  .metric-value.green { color: var(--green); }
+  .metric-value.yellow { color: var(--yellow); }
+  .metric-value.red { color: var(--red); }
+  .next-turn-btn { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 8px 20px; font-weight: 600; cursor: pointer; font-size: 14px; white-space: nowrap; }
+  .next-turn-btn:hover { opacity: .85; }
+
+  /* MAIN CONTENT */
+  .main { display: flex; flex: 1; overflow: hidden; }
+  .sidebar { width: 200px; background: var(--surface); border-right: 1px solid var(--border); padding: 16px 0; flex-shrink: 0; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; cursor: pointer; color: var(--muted); transition: all .2s; font-size: 13px; }
+  .nav-item:hover { color: var(--text); background: var(--surface2); }
+  .nav-item.active { color: var(--text); background: rgba(108,99,255,.12); border-right: 3px solid var(--accent); }
+  .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+  .content { flex: 1; overflow-y: auto; padding: 24px; }
+
+  /* PANELS */
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .panel-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
+
+  /* DASHBOARD */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .kpi-title { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  .kpi-val { font-size: 1.6rem; font-weight: 800; }
+  .kpi-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .kpi-delta { font-size: 12px; margin-top: 4px; }
+  .kpi-delta.up { color: var(--green); }
+  .kpi-delta.down { color: var(--red); }
+
+  .runway-bar-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 24px; }
+  .runway-bar-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; color: var(--muted); }
+  .runway-bar-track { background: var(--surface2); border-radius: 4px; height: 10px; overflow: hidden; }
+  .runway-bar-fill { height: 100%; border-radius: 4px; transition: width .5s; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .chart-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .chart-title { font-size: 12px; color: var(--muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  canvas { display: block; }
+
+  .event-feed { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-top: 16px; max-height: 200px; overflow-y: auto; }
+  .event-feed-title { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
+  .feed-item { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--muted); display: flex; gap: 8px; }
+  .feed-item:last-child { border-bottom: none; }
+  .feed-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
+  .feed-tag.good { background: rgba(67,217,173,.15); color: var(--green); }
+  .feed-tag.bad { background: rgba(239,71,111,.15); color: var(--red); }
+  .feed-tag.info { background: rgba(108,99,255,.15); color: var(--accent); }
+
+  /* TEAM PANEL */
+  .role-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .role-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .role-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .role-name { font-weight: 700; font-size: 15px; }
+  .role-emoji { font-size: 24px; }
+  .role-stat { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; border-bottom: 1px solid var(--border); }
+  .role-stat:last-of-type { border-bottom: none; }
+  .role-stat-label { color: var(--muted); }
+  .role-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .count-badge { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 12px; font-weight: 700; font-size: 15px; }
+
+  /* PRODUCT PANEL */
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; position: relative; overflow: hidden; }
+  .feature-card.unlocked { border-color: var(--green); }
+  .feature-card.locked { opacity: .6; }
+  .feature-name { font-weight: 700; margin-bottom: 6px; }
+  .feature-desc { color: var(--muted); font-size: 12px; margin-bottom: 12px; line-height: 1.5; }
+  .feature-cost { font-size: 12px; color: var(--yellow); margin-bottom: 8px; }
+  .feature-progress { background: var(--surface2); border-radius: 4px; height: 6px; margin-bottom: 12px; overflow: hidden; }
+  .feature-progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width .3s; }
+  .unlock-badge { position: absolute; top: 12px; right: 12px; background: rgba(67,217,173,.15); color: var(--green); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+
+  /* MARKET PANEL */
+  .market-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .market-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .market-title { font-weight: 700; margin-bottom: 12px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 13px; }
+  .bar-label { width: 100px; color: var(--muted); flex-shrink: 0; }
+  .bar-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .bar-val { width: 40px; text-align: right; flex-shrink: 0; }
+
+  /* FINANCIALS */
+  .fin-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .fin-table th { text-align: left; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .fin-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .fin-table tr:last-child td { border-bottom: none; }
+  .fin-table tr:hover td { background: var(--surface2); }
+  .pos { color: var(--green); }
+  .neg { color: var(--red); }
+
+  /* EVENTS PANEL */
+  .event-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+  .event-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .event-emoji { font-size: 2rem; }
+  .event-title { font-weight: 700; font-size: 1rem; }
+  .event-body { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
+  .event-choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; cursor: pointer; text-align: left; transition: all .2s; font-size: 13px; color: var(--text); }
+  .choice-btn:hover { border-color: var(--accent); background: rgba(108,99,255,.1); }
+  .choice-cost { color: var(--yellow); font-size: 12px; margin-top: 4px; }
+
+  /* FUNDRAISING */
+  .raise-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+  .raise-title { font-weight: 700; margin-bottom: 8px; font-size: 1rem; }
+  .raise-desc { color: var(--muted); font-size: 13px; margin-bottom: 16px; line-height: 1.5; }
+  .raise-terms { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .raise-term { background: var(--surface2); border-radius: 6px; padding: 10px; }
+  .raise-term-label { font-size: 10px; color: var(--muted); text-transform: uppercase; }
+  .raise-term-val { font-weight: 700; margin-top: 2px; }
+
+  /* WIN / LOSE */
+  #endscreen { flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 24px; padding: 32px; }
+  #endscreen h1 { font-size: 2.5rem; font-weight: 800; }
+  #endscreen .result-card { width: 480px; text-align: center; }
+
+  /* NOTIFICATION TOAST */
+  #toast-container { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 8px; z-index: 1000; }
+  .toast { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; font-size: 13px; max-width: 320px; box-shadow: 0 4px 20px rgba(0,0,0,.4); animation: slide-in .3s ease; }
+  .toast.good { border-color: var(--green); }
+  .toast.bad { border-color: var(--red); }
+  @keyframes slide-in { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--surface); } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .tag { font-size: 11px; padding: 2px 10px; border-radius: 10px; font-weight: 600; }
+  .tag.warning { background: rgba(255,209,102,.15); color: var(--yellow); }
+  .tag.success { background: rgba(67,217,173,.15); color: var(--green); }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+  .morale-faces { font-size: 1.5rem; letter-spacing: 2px; }
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .pill { font-size: 11px; padding: 3px 10px; border-radius: 10px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- INTRO SCREEN -->
+<div id="intro" class="screen active">
+  <h1>Founder Mode</h1>
+  <p class="sub">Build a startup from a napkin sketch to a billion-dollar exit — before your runway runs out.</p>
+  <div class="card" style="width:480px">
+    <div id="setup-form">
+      <div>
+        <label>Company Name</label>
+        <input type="text" id="company-name-input" placeholder="e.g. NovaSpark" maxlength="24">
+      </div>
+      <div>
+        <label>Choose your Industry</label>
+        <div class="industry-grid" id="industry-grid"></div>
+      </div>
+      <div>
+        <label>Difficulty</label>
+        <select id="difficulty-select">
+          <option value="easy">Easy — $200k seed, forgiving market</option>
+          <option value="normal" selected>Normal — $100k seed, realistic</option>
+          <option value="hard">Hard — $50k seed, brutal competition</option>
+        </select>
+      </div>
+      <button class="btn" onclick="startGame()">Launch Your Startup 🚀</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="game" class="screen">
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="company-name" id="hdr-company"></span>
+      <span class="turn-badge" id="hdr-turn"></span>
+    </div>
+    <div class="metrics-bar">
+      <div class="metric">
+        <span class="metric-label">Cash</span>
+        <span class="metric-value" id="hdr-cash"></span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Burn/mo</span>
+        <span class="metric-value red" id="hdr-burn"></span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Revenue/mo</span>
+        <span class="metric-value green" id="hdr-rev"></span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Users</span>
+        <span class="metric-value" id="hdr-users"></span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Valuation</span>
+        <span class="metric-value yellow" id="hdr-val"></span>
+      </div>
+    </div>
+    <button class="next-turn-btn" onclick="nextTurn()">▶ Next Month</button>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div class="nav-item active" onclick="showPanel('dashboard')" data-panel="dashboard"><span class="nav-icon">📊</span>Dashboard</div>
+      <div class="nav-item" onclick="showPanel('team')" data-panel="team"><span class="nav-icon">👥</span>Team</div>
+      <div class="nav-item" onclick="showPanel('product')" data-panel="product"><span class="nav-icon">⚙️</span>Product</div>
+      <div class="nav-item" onclick="showPanel('market')" data-panel="market"><span class="nav-icon">📈</span>Market</div>
+      <div class="nav-item" onclick="showPanel('financials')" data-panel="financials"><span class="nav-icon">💰</span>Financials</div>
+      <div class="nav-item" onclick="showPanel('fundraise')" data-panel="fundraise"><span class="nav-icon">🤝</span>Fundraise</div>
+      <div class="nav-item" onclick="showPanel('events')" data-panel="events"><span class="nav-icon">⚡</span>Events <span id="event-badge" style="display:none;background:var(--red);color:#fff;border-radius:10px;font-size:10px;padding:1px 6px;margin-left:4px"></span></div>
+    </div>
+    <div class="content">
+      <!-- DASHBOARD -->
+      <div id="panel-dashboard" class="panel active">
+        <div class="panel-title">Dashboard</div>
+        <div class="kpi-grid" id="kpi-grid"></div>
+        <div class="runway-bar-wrap">
+          <div class="runway-bar-label">
+            <span>Runway</span>
+            <span id="runway-label"></span>
+          </div>
+          <div class="runway-bar-track">
+            <div class="runway-bar-fill" id="runway-fill"></div>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="chart-box">
+            <div class="chart-title">Cash Over Time ($)</div>
+            <canvas id="cash-chart" width="380" height="160"></canvas>
+          </div>
+          <div class="chart-box">
+            <div class="chart-title">Users Over Time</div>
+            <canvas id="user-chart" width="380" height="160"></canvas>
+          </div>
+        </div>
+        <div class="event-feed">
+          <div class="event-feed-title">Activity Log</div>
+          <div id="feed-list"></div>
+        </div>
+      </div>
+
+      <!-- TEAM -->
+      <div id="panel-team" class="panel">
+        <div class="section-header">
+          <div class="panel-title" style="margin:0">Team</div>
+          <span class="tag warning" id="payroll-tag"></span>
+        </div>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Each role contributes to product, sales, or operations. Morale affects productivity.</p>
+        <div class="role-grid" id="role-grid"></div>
+        <hr class="divider">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Team Morale</div>
+            <div class="morale-faces" id="morale-faces"></div>
+          </div>
+          <div style="flex:1">
+            <div class="bar-track" style="height:12px">
+              <div class="bar-fill" id="morale-bar" style="background:var(--green)"></div>
+            </div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px" id="morale-label"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCT -->
+      <div id="panel-product" class="panel">
+        <div class="section-header">
+          <div class="panel-title" style="margin:0">Product Development</div>
+          <span class="tag success" id="product-score-tag"></span>
+        </div>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Invest in features to grow your product score. Higher scores unlock better growth multipliers and attract investors.</p>
+        <div class="feature-grid" id="feature-grid"></div>
+      </div>
+
+      <!-- MARKET -->
+      <div id="panel-market" class="panel">
+        <div class="panel-title">Market Overview</div>
+        <div class="market-grid" id="market-grid"></div>
+      </div>
+
+      <!-- FINANCIALS -->
+      <div id="panel-financials" class="panel">
+        <div class="panel-title">Financials</div>
+        <div class="two-col" style="margin-bottom:20px">
+          <div class="chart-box">
+            <div class="chart-title">Monthly Revenue vs Burn</div>
+            <canvas id="fin-chart" width="380" height="160"></canvas>
+          </div>
+          <div class="chart-box">
+            <div class="chart-title">P&amp;L Summary</div>
+            <div id="pl-summary" style="margin-top:8px"></div>
+          </div>
+        </div>
+        <div class="card">
+          <table class="fin-table" id="fin-table">
+            <thead><tr><th>Month</th><th>Revenue</th><th>Salaries</th><th>Ops Cost</th><th>Net</th><th>Cash</th></tr></thead>
+            <tbody id="fin-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- FUNDRAISE -->
+      <div id="panel-fundraise" class="panel">
+        <div class="panel-title">Fundraising</div>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Raise capital to extend your runway. Each round dilutes your equity but buys time to grow.</p>
+        <div id="raise-options"></div>
+        <hr class="divider">
+        <div class="card">
+          <div style="font-weight:700;margin-bottom:8px">Cap Table</div>
+          <div id="cap-table"></div>
+        </div>
+      </div>
+
+      <!-- EVENTS -->
+      <div id="panel-events" class="panel">
+        <div class="panel-title">Active Events</div>
+        <div id="events-list"></div>
+        <div id="no-events" style="color:var(--muted);text-align:center;padding:40px;display:none">No pending events — advance to the next month to trigger new ones.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- END SCREEN -->
+<div id="endscreen" class="screen">
+  <h1 id="end-title"></h1>
+  <div class="card result-card">
+    <div id="end-body" style="margin-bottom:20px;line-height:1.7;color:var(--muted)"></div>
+    <button class="btn" onclick="restartGame()">Play Again</button>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  DATA DEFINITIONS
+// ═══════════════════════════════════════════════════════
+
+const INDUSTRIES = [
+  { id: 'saas', name: 'B2B SaaS', emoji: '💼', arpu: 80, tam: 5e9 },
+  { id: 'consumer', name: 'Consumer App', emoji: '📱', arpu: 5, tam: 20e9 },
+  { id: 'fintech', name: 'Fintech', emoji: '💳', arpu: 50, tam: 8e9 },
+  { id: 'health', name: 'Healthtech', emoji: '🏥', arpu: 120, tam: 12e9 },
+  { id: 'ecom', name: 'E-commerce', emoji: '🛍️', arpu: 20, tam: 30e9 },
+  { id: 'ai', name: 'AI / ML', emoji: '🤖', arpu: 100, tam: 10e9 },
+];
+
+const ROLES = [
+  { id: 'engineer', name: 'Engineer', emoji: '👩‍💻', salary: 8000, productPts: 3, salesPts: 0, desc: 'Builds product features' },
+  { id: 'designer', name: 'Designer', emoji: '🎨', salary: 6000, productPts: 1.5, salesPts: 0.5, desc: 'Improves UX & conversion' },
+  { id: 'sales', name: 'Sales Rep', emoji: '🤝', salary: 5000, productPts: 0, salesPts: 4, desc: 'Drives revenue growth' },
+  { id: 'marketer', name: 'Marketer', emoji: '📣', salary: 5500, productPts: 0, salesPts: 2.5, desc: 'Grows user acquisition' },
+  { id: 'support', name: 'Support', emoji: '🎧', salary: 4000, productPts: 0, salesPts: 0.5, desc: 'Reduces churn' },
+  { id: 'cto', name: 'CTO', emoji: '🧑‍🔬', salary: 15000, productPts: 6, salesPts: 1, desc: 'Accelerates tech velocity', maxCount: 1 },
+  { id: 'cmo', name: 'CMO', emoji: '📊', salary: 14000, productPts: 0, salesPts: 5, desc: 'Supercharges growth', maxCount: 1 },
+];
+
+const FEATURES = [
+  { id: 'mvp', name: 'MVP Launch', emoji: '🚀', desc: 'Basic product, proves your concept.', cost: 0, time: 0, score: 5, unlocked: true, requires: [] },
+  { id: 'analytics', name: 'Analytics Dashboard', emoji: '📊', desc: 'Track user behaviour, improve retention.', cost: 15000, time: 2, score: 8, unlocked: false, requires: ['mvp'] },
+  { id: 'api', name: 'Public API', emoji: '🔌', desc: 'Open up to developers, viral B2B growth.', cost: 25000, time: 3, score: 12, unlocked: false, requires: ['mvp'] },
+  { id: 'mobile', name: 'Mobile App', emoji: '📱', desc: 'Native iOS/Android boosts DAU.', cost: 40000, time: 3, score: 15, unlocked: false, requires: ['analytics'] },
+  { id: 'ai_feature', name: 'AI Recommendations', emoji: '🤖', desc: 'Personalised AI layer, premium pricing.', cost: 60000, time: 4, score: 22, unlocked: false, requires: ['api'] },
+  { id: 'enterprise', name: 'Enterprise Tier', emoji: '🏢', desc: 'SSO, SLAs, big-ticket contracts.', cost: 80000, time: 4, score: 28, unlocked: false, requires: ['ai_feature', 'analytics'] },
+  { id: 'intl', name: 'Internationalisation', emoji: '🌍', desc: 'Multi-language, global expansion.', cost: 50000, time: 3, score: 18, unlocked: false, requires: ['mobile'] },
+  { id: 'platform', name: 'Platform / Marketplace', emoji: '🏪', desc: 'Network effects, flywheel growth.', cost: 120000, time: 5, score: 40, unlocked: false, requires: ['enterprise', 'intl'] },
+];
+
+const EVENTS_POOL = [
+  // GOOD
+  { id: 'press', type: 'good', emoji: '📰', title: 'Viral Press Coverage', body: 'A major tech blog wrote about you. Traffic is spiking.',
+    choices: [{ label: 'Capitalise on it — boost marketing spend', cost: 5000, effect: gs => { gs.users = Math.floor(gs.users * 1.4); toast('User base grew 40%!', 'good'); } },
+              { label: 'Stay focused on product', cost: 0, effect: gs => { gs.users = Math.floor(gs.users * 1.15); } }] },
+  { id: 'big_client', type: 'good', emoji: '💼', title: 'Enterprise Inbound', body: 'A Fortune 500 company wants a demo. Landing them would be huge.',
+    choices: [{ label: 'Dedicate team to close the deal ($10k)', cost: 10000, effect: gs => { gs.revenue += 20000; toast('+$20k/mo recurring contract!', 'good'); } },
+              { label: 'Too much distraction right now', cost: 0, effect: gs => {} }] },
+  { id: 'talent', type: 'good', emoji: '⭐', title: 'Star Engineer Applicant', body: 'An exceptional engineer from a FAANG company wants to join at a 20% discount.',
+    choices: [{ label: 'Hire them ($6400/mo)', cost: 0, effect: gs => { gs.team.engineer = (gs.team.engineer||0)+1; gs.salaries += 6400; toast('Star engineer joined the team!', 'good'); } },
+              { label: 'Pass for now', cost: 0, effect: gs => {} }] },
+  { id: 'partnership', type: 'good', emoji: '🤝', title: 'Strategic Partnership', body: 'A complementary startup wants a referral partnership — 15% of referred deals.',
+    choices: [{ label: 'Accept the partnership', cost: 0, effect: gs => { gs.revenue += Math.floor(gs.revenue * .15); toast('Partnership revenue flowing in!', 'good'); } },
+              { label: 'Negotiate better terms first', cost: 0, effect: gs => { gs.revenue += Math.floor(gs.revenue * .08); } }] },
+  { id: 'conference', type: 'good', emoji: '🎤', title: 'Conference Speaking Slot', body: 'You\'ve been invited to keynote a major industry conference.',
+    choices: [{ label: 'Go and network ($3k travel)', cost: 3000, effect: gs => { gs.users = Math.floor(gs.users * 1.2); gs.morale = Math.min(100, gs.morale+10); toast('Great exposure! Users up 20%', 'good'); } },
+              { label: 'Send slides, skip the trip', cost: 0, effect: gs => { gs.users = Math.floor(gs.users * 1.05); } }] },
+  { id: 'award', type: 'good', emoji: '🏆', title: 'Industry Award', body: 'You won "Best Startup" at a regional awards ceremony.',
+    choices: [{ label: 'PR blast + celebrate with team ($2k)', cost: 2000, effect: gs => { gs.morale = Math.min(100, gs.morale+20); gs.users = Math.floor(gs.users*1.1); toast('Morale boosted!', 'good'); } },
+              { label: 'Just post it on social', cost: 0, effect: gs => { gs.morale = Math.min(100, gs.morale+5); } }] },
+  // BAD
+  { id: 'server_outage', type: 'bad', emoji: '🔥', title: 'Server Outage', body: 'Your infrastructure went down for 6 hours. Users are furious.',
+    choices: [{ label: 'Emergency infra upgrade ($8k)', cost: 8000, effect: gs => { gs.churn = Math.max(0, gs.churn-0.01); toast('Infra patched, churn stabilised.', 'good'); } },
+              { label: 'Apologise and patch manually', cost: 0, effect: gs => { gs.users = Math.floor(gs.users*0.92); gs.churn += 0.02; toast('Lost some users to the outage.', 'bad'); } }] },
+  { id: 'competitor', type: 'bad', emoji: '⚔️', title: 'Well-Funded Competitor', body: 'A rival just raised $5M Series A and is undercutting your pricing.',
+    choices: [{ label: 'Match their pricing (lose 20% revenue)', cost: 0, effect: gs => { gs.revenue = Math.floor(gs.revenue*0.8); toast('Revenue dip from price match.', 'bad'); } },
+              { label: 'Differentiate — invest in unique features ($12k)', cost: 12000, effect: gs => { gs.productScore += 5; toast('Product differentiation +5', 'good'); } },
+              { label: 'Ignore them and stay the course', cost: 0, effect: gs => { gs.users = Math.floor(gs.users*0.95); } }] },
+  { id: 'key_departure', type: 'bad', emoji: '😢', title: 'Key Employee Quits', body: 'Your best engineer just got poached by Google. Team morale is shaken.',
+    choices: [{ label: 'Counter-offer ($3k/mo raise)', cost: 0, effect: gs => { gs.salaries += 3000; gs.morale = Math.min(100, gs.morale+5); toast('Retained talent at higher cost.', 'good'); } },
+              { label: 'Let them go, start hiring', cost: 5000, effect: gs => { gs.morale -= 15; gs.productScore -= 3; toast('Lost engineering velocity.', 'bad'); } }] },
+  { id: 'bug', type: 'bad', emoji: '🐛', title: 'Critical Security Bug', body: 'A researcher found a major vulnerability in your app. You have 48 hours.',
+    choices: [{ label: 'Emergency all-hands fix ($5k overtime)', cost: 5000, effect: gs => { toast('Bug squashed, reputation intact.', 'good'); } },
+              { label: 'Patch quietly, hope nobody notices', cost: 0, effect: gs => { if (Math.random() > .5) { gs.users = Math.floor(gs.users*0.88); toast('News leaked! Users churned.', 'bad'); } else { toast('Got away with it... this time.', 'info'); } } }] },
+  { id: 'regulation', type: 'bad', emoji: '⚖️', title: 'Regulatory Inquiry', body: 'A regulator has questions about your data practices. Legal fees incoming.',
+    choices: [{ label: 'Hire compliance lawyer ($15k)', cost: 15000, effect: gs => { toast('Compliance sorted. Crisis averted.', 'good'); } },
+              { label: 'Handle in-house', cost: 2000, effect: gs => { if (Math.random() > .4) { toast('Resolved without issue.', 'good'); } else { gs.cash -= 20000; toast('Fine issued — $20k penalty!', 'bad'); } } }] },
+  { id: 'recession', type: 'bad', emoji: '📉', title: 'Market Downturn', body: 'Economic headwinds are hitting growth across the industry.',
+    choices: [{ label: 'Cut costs aggressively (lay off 1 role)', cost: 0, effect: gs => { const roles = Object.keys(gs.team).filter(r=>gs.team[r]>0); if(roles.length){ const r=roles[0]; gs.team[r]--; const role=ROLES.find(x=>x.id===r); if(role){gs.salaries-=role.salary;} gs.morale-=20; toast('Downsized team, morale hit.','bad');} } },
+              { label: 'Stay lean, reduce marketing spend', cost: 0, effect: gs => { gs.users = Math.floor(gs.users*0.95); toast('Growth slowed but team intact.','info'); } }] },
+  // NEUTRAL / OPPORTUNITY
+  { id: 'acquisition', type: 'info', emoji: '💰', title: 'Acquisition Offer', body: 'A larger company just offered to buy you out.',
+    choices: [{ label: 'Accept the offer (triggers win condition!)', cost: 0, effect: gs => { gs.acquired = true; toast('Deal closed! Congratulations!', 'good'); } },
+              { label: 'Decline — we\'re building for IPO', cost: 0, effect: gs => { toast('Turned down the offer. Eyes on the prize.', 'info'); } }] },
+  { id: 'pivot', type: 'info', emoji: '🔄', title: 'Pivot Opportunity', body: 'User data reveals an unexpected use-case with 3x the revenue potential.',
+    choices: [{ label: 'Pivot the product ($20k redev)', cost: 20000, effect: gs => { gs.revenue = Math.floor(gs.revenue*1.8); gs.users = Math.floor(gs.users*0.7); toast('Pivot in progress — revenue up, users adjusting.', 'info'); } },
+              { label: 'Stay the course', cost: 0, effect: gs => {} }] },
+  { id: 'hackathon', type: 'good', emoji: '👾', title: 'Win a Hackathon', body: 'Your team entered a hackathon and won! Great press and a small cash prize.',
+    choices: [{ label: 'Accept the $5k prize money', cost: 0, effect: gs => { gs.cash += 5000; gs.morale = Math.min(100, gs.morale+15); toast('+$5k and morale boost!', 'good'); } }] },
+  { id: 'vc_meeting', type: 'info', emoji: '🤑', title: 'VC Cold Outreach', body: 'A top-tier VC wants a meeting. Good timing could mean a term sheet.',
+    choices: [{ label: 'Take the meeting', cost: 0, effect: gs => { gs.investorInterest = Math.min(100, (gs.investorInterest||0)+25); toast('Investor interest increased!', 'good'); } },
+              { label: 'Not ready yet', cost: 0, effect: gs => {} }] },
+];
+
+const FUNDING_ROUNDS = [
+  { id: 'angel', name: 'Angel Round', amount: 150000, equity: 10, minScore: 5, minMonth: 0, desc: 'Friends, family, and angels. Small cheque, quick close.' },
+  { id: 'pre_seed', name: 'Pre-Seed', amount: 500000, equity: 15, minScore: 15, minMonth: 3, desc: 'Early-stage fund, gets you to product-market fit.' },
+  { id: 'seed', name: 'Seed Round', amount: 2000000, equity: 20, minScore: 30, minMonth: 6, desc: 'Serious seed funding to build the team and scale.' },
+  { id: 'series_a', name: 'Series A', amount: 8000000, equity: 25, minScore: 55, minMonth: 12, desc: 'Growth capital. Requires strong metrics and proven model.' },
+  { id: 'series_b', name: 'Series B', amount: 25000000, equity: 20, minScore: 80, minMonth: 18, desc: 'Scale aggressively. The big leagues.' },
+];
+
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+// ═══════════════════════════════════════════════════════
+//  GAME STATE
+// ═══════════════════════════════════════════════════════
+
+let gs = null;
+let selectedIndustry = null;
+let pendingEvents = [];
+let activityLog = [];
+let financialHistory = [];
+let cashHistory = [];
+let userHistory = [];
+
+function initState(companyName, industry, difficulty) {
+  const diffMap = { easy: { cash: 200000, ops: 3000 }, normal: { cash: 100000, ops: 5000 }, hard: { cash: 50000, ops: 8000 } };
+  const diff = diffMap[difficulty];
+  return {
+    companyName,
+    industry,
+    difficulty,
+    month: 1,
+    cash: diff.cash,
+    revenue: 0,
+    salaries: 0,
+    opsCost: diff.ops,
+    users: 0,
+    churn: 0.05,
+    productScore: 5,
+    morale: 80,
+    team: {},
+    raisedRounds: [],
+    equity: 100,
+    valuation: 500000,
+    investorInterest: 0,
+    featureProgress: { mvp: 100 },
+    activeFeatures: ['mvp'],
+    pendingFeature: null,
+    acquired: false,
+    won: false,
+    lost: false,
+  };
+}
+
+// ═══════════════════════════════════════════════════════
+//  SETUP UI
+// ═══════════════════════════════════════════════════════
+
+function buildIntro() {
+  const grid = document.getElementById('industry-grid');
+  grid.innerHTML = '';
+  INDUSTRIES.forEach(ind => {
+    const btn = document.createElement('div');
+    btn.className = 'industry-btn';
+    btn.innerHTML = `${ind.emoji}<br>${ind.name}`;
+    btn.onclick = () => {
+      document.querySelectorAll('.industry-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedIndustry = ind;
+    };
+    grid.appendChild(btn);
+  });
+  // Default select first
+  grid.children[0].click();
+}
+
+function startGame() {
+  const name = document.getElementById('company-name-input').value.trim() || 'FounderCo';
+  const difficulty = document.getElementById('difficulty-select').value;
+  if (!selectedIndustry) { alert('Pick an industry!'); return; }
+  gs = initState(name, selectedIndustry, difficulty);
+  pendingEvents = [];
+  activityLog = [];
+  financialHistory = [];
+  cashHistory = [gs.cash];
+  userHistory = [0];
+  showScreen('game');
+  log('Company founded!', 'info');
+  log(`Industry: ${gs.industry.name}`, 'info');
+  renderAll();
+  showPanel('dashboard');
+}
+
+// ═══════════════════════════════════════════════════════
+//  CORE GAME LOOP
+// ═══════════════════════════════════════════════════════
+
+function nextTurn() {
+  if (pendingEvents.length > 0) {
+    showPanel('events');
+    toast('Resolve pending events first!', 'bad');
+    return;
+  }
+  if (gs.pendingFeature) {
+    // tick feature progress
+    const f = FEATURES.find(x => x.id === gs.pendingFeature.id);
+    gs.pendingFeature.turnsLeft--;
+    if (gs.pendingFeature.turnsLeft <= 0) {
+      gs.activeFeatures.push(f.id);
+      gs.productScore += f.score;
+      gs.pendingFeature = null;
+      log(`Feature "${f.name}" launched!`, 'good');
+      toast(`🚀 ${f.name} is live! +${f.score} product score`, 'good');
+    }
+  }
+
+  processMonth();
+  gs.month++;
+  generateEvent();
+  checkWinLose();
+  renderAll();
+
+  if (pendingEvents.length > 0) {
+    document.getElementById('event-badge').textContent = pendingEvents.length;
+    document.getElementById('event-badge').style.display = 'inline';
+    toast(`⚡ ${pendingEvents.length} new event(s) require attention!`, 'info');
+  }
+}
+
+function processMonth() {
+  const ind = gs.industry;
+  // User growth driven by product score, sales staff, and morale
+  const salesPower = getTotalSalesPts();
+  const moraleMultiplier = gs.morale / 100;
+  const baseGrowth = (gs.productScore * 0.8 + salesPower * 2.5) * moraleMultiplier;
+  const newUsers = Math.floor(baseGrowth * (1 + Math.random() * 0.3));
+  const churnedUsers = Math.floor(gs.users * gs.churn);
+  gs.users = Math.max(0, gs.users + newUsers - churnedUsers);
+
+  // Revenue
+  const arpu = ind.arpu;
+  gs.revenue = Math.floor(gs.users * arpu * (1 + gs.productScore / 200));
+
+  // Costs
+  const totalCosts = gs.salaries + gs.opsCost;
+  const net = gs.revenue - totalCosts;
+  gs.cash += net;
+
+  // Valuation (revenue multiple + product score)
+  const revMultiple = gs.revenue > 0 ? (gs.raisedRounds.length > 0 ? 10 : 6) : 1;
+  gs.valuation = Math.max(500000, gs.revenue * revMultiple * 12 + gs.productScore * 50000 + gs.users * 50);
+
+  // Morale decay / recovery
+  if (gs.salaries > 0 && gs.cash < 0) gs.morale = Math.max(0, gs.morale - 15);
+  else if (net > 0) gs.morale = Math.min(100, gs.morale + 2);
+  else gs.morale = Math.max(0, gs.morale - 1);
+
+  // Natural churn improvement with support staff
+  const supportCount = gs.team['support'] || 0;
+  gs.churn = Math.max(0.01, 0.05 - supportCount * 0.005 - gs.productScore * 0.0002);
+
+  // Log financials
+  const monthLabel = MONTHS[(gs.month - 1) % 12] + ' Y' + Math.ceil(gs.month / 12);
+  financialHistory.push({ month: monthLabel, revenue: gs.revenue, salaries: gs.salaries, ops: gs.opsCost, net, cash: gs.cash });
+  cashHistory.push(gs.cash);
+  userHistory.push(gs.users);
+
+  log(`Month ${gs.month}: Revenue $${fmt(gs.revenue)}, Net ${net >= 0 ? '+' : ''}$${fmt(net)}`, net >= 0 ? 'good' : 'bad');
+}
+
+function getTotalSalesPts() {
+  let pts = 0;
+  ROLES.forEach(r => { pts += (gs.team[r.id] || 0) * r.salesPts; });
+  return pts;
+}
+
+function getTotalProductPts() {
+  let pts = 0;
+  ROLES.forEach(r => { pts += (gs.team[r.id] || 0) * r.productPts; });
+  return pts;
+}
+
+function generateEvent() {
+  if (Math.random() < 0.7) {
+    const pool = EVENTS_POOL.filter(e => {
+      if (e.id === 'acquisition' && (gs.valuation < 2000000 || gs.month < 12)) return false;
+      if (e.id === 'enterprise' && !gs.activeFeatures.includes('enterprise')) return false;
+      return true;
+    });
+    const ev = pool[Math.floor(Math.random() * pool.length)];
+    if (ev) pendingEvents.push({ ...ev, choices: ev.choices.map(c => ({ ...c })) });
+  }
+}
+
+function resolveEvent(eventId, choiceIdx) {
+  const idx = pendingEvents.findIndex(e => e.id === eventId);
+  if (idx === -1) return;
+  const ev = pendingEvents[idx];
+  const choice = ev.choices[choiceIdx];
+  if (choice.cost && gs.cash < choice.cost) { toast('Not enough cash!', 'bad'); return; }
+  if (choice.cost) gs.cash -= choice.cost;
+  choice.effect(gs);
+  log(`Event: "${ev.title}" — chose: ${choice.label}`, ev.type);
+  pendingEvents.splice(idx, 1);
+  if (pendingEvents.length === 0) {
+    document.getElementById('event-badge').style.display = 'none';
+  } else {
+    document.getElementById('event-badge').textContent = pendingEvents.length;
+  }
+  if (gs.acquired) { endGame('win', 'acquisition'); return; }
+  renderAll();
+}
+
+function checkWinLose() {
+  const runway = getRunwayMonths();
+  if (gs.cash < 0 && gs.revenue < gs.salaries + gs.opsCost) {
+    endGame('lose');
+  } else if (gs.valuation >= 1e9) {
+    endGame('win', 'unicorn');
+  } else if (gs.raisedRounds.includes('series_b') && gs.month >= 36) {
+    endGame('win', 'ipo');
+  }
+}
+
+function getRunwayMonths() {
+  const burn = gs.salaries + gs.opsCost - gs.revenue;
+  if (burn <= 0) return Infinity;
+  return Math.max(0, gs.cash / burn);
+}
+
+function endGame(result, reason) {
+  showScreen('endscreen');
+  if (result === 'win') {
+    let title = '';
+    let body = '';
+    if (reason === 'unicorn') { title = '🦄 Unicorn!'; body = `${gs.companyName} is now valued at over $1 billion. You built a unicorn startup from nothing!`; }
+    else if (reason === 'ipo') { title = '🎉 IPO Success!'; body = `${gs.companyName} went public on the NASDAQ. You rang the opening bell!`; }
+    else if (reason === 'acquisition') { title = '💰 Acquired!'; body = `${gs.companyName} was acquired! You closed a life-changing deal.`; }
+    document.getElementById('end-title').style.color = 'var(--green)';
+    document.getElementById('end-title').textContent = title;
+    document.getElementById('end-body').innerHTML = `
+      ${body}<br><br>
+      <strong>Final Stats:</strong><br>
+      Month reached: ${gs.month}<br>
+      Users: ${fmtNum(gs.users)}<br>
+      Revenue: $${fmt(gs.revenue)}/mo<br>
+      Valuation: $${fmtLarge(gs.valuation)}<br>
+      Equity retained: ${gs.equity.toFixed(1)}%
+    `;
+  } else {
+    document.getElementById('end-title').style.color = 'var(--red)';
+    document.getElementById('end-title').textContent = '💀 Startup Dead';
+    document.getElementById('end-body').innerHTML = `
+      ${gs.companyName} ran out of runway. It happens to the best of us.<br><br>
+      <strong>Postmortem:</strong><br>
+      Survived: ${gs.month} months<br>
+      Peak users: ${fmtNum(Math.max(...userHistory))}<br>
+      Cash at death: $${fmt(gs.cash)}<br>
+      Product score: ${gs.productScore}
+    `;
+  }
+}
+
+function restartGame() {
+  showScreen('intro');
+  pendingEvents = [];
+  activityLog = [];
+}
+
+// ═══════════════════════════════════════════════════════
+//  FUNDRAISING
+// ═══════════════════════════════════════════════════════
+
+function raise(roundId) {
+  const round = FUNDING_ROUNDS.find(r => r.id === roundId);
+  if (!round) return;
+  if (gs.raisedRounds.includes(roundId)) { toast('Already raised this round!', 'bad'); return; }
+  if (gs.productScore < round.minScore) { toast(`Need product score ≥ ${round.minScore} for ${round.name}`, 'bad'); return; }
+  if (gs.month < round.minMonth) { toast(`Too early — need to be in month ${round.minMonth}+`, 'bad'); return; }
+  const dilution = round.equity;
+  gs.equity = gs.equity * (1 - dilution / 100);
+  gs.cash += round.amount;
+  gs.raisedRounds.push(roundId);
+  log(`Raised ${round.name}: +$${fmtLarge(round.amount)} (${dilution}% dilution)`, 'good');
+  toast(`💸 ${round.name} closed! +$${fmtLarge(round.amount)}`, 'good');
+  renderAll();
+}
+
+// ═══════════════════════════════════════════════════════
+//  TEAM MANAGEMENT
+// ═══════════════════════════════════════════════════════
+
+function hire(roleId) {
+  const role = ROLES.find(r => r.id === roleId);
+  if (!role) return;
+  if (role.maxCount && (gs.team[roleId] || 0) >= role.maxCount) { toast(`Can only have 1 ${role.name}`, 'bad'); return; }
+  if (gs.cash < role.salary * 2) { toast('Need at least 2 months of salary in cash!', 'bad'); return; }
+  gs.team[roleId] = (gs.team[roleId] || 0) + 1;
+  gs.salaries += role.salary;
+  log(`Hired: ${role.name}`, 'good');
+  toast(`${role.emoji} ${role.name} hired! +$${fmt(role.salary)}/mo`, 'good');
+  renderAll();
+}
+
+function fire(roleId) {
+  const role = ROLES.find(r => r.id === roleId);
+  if (!role || !gs.team[roleId] || gs.team[roleId] <= 0) return;
+  gs.team[roleId]--;
+  gs.salaries -= role.salary;
+  gs.morale = Math.max(0, gs.morale - 10);
+  log(`Fired: ${role.name} (morale -10)`, 'bad');
+  toast(`${role.name} let go. Team morale dipped.`, 'bad');
+  renderAll();
+}
+
+// ═══════════════════════════════════════════════════════
+//  PRODUCT
+// ═══════════════════════════════════════════════════════
+
+function investFeature(featureId) {
+  if (gs.pendingFeature) { toast('Already developing a feature!', 'bad'); return; }
+  const f = FEATURES.find(x => x.id === featureId);
+  if (!f || gs.activeFeatures.includes(f.id)) return;
+  if (f.requires.some(r => !gs.activeFeatures.includes(r))) { toast('Requirements not met!', 'bad'); return; }
+  if (gs.cash < f.cost) { toast('Not enough cash!', 'bad'); return; }
+  gs.cash -= f.cost;
+  gs.pendingFeature = { id: featureId, turnsLeft: f.time };
+  log(`Started development: ${f.name}`, 'info');
+  toast(`🔨 Building "${f.name}" — ${f.time} months to completion`, 'info');
+  renderAll();
+}
+
+// ═══════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════
+
+function renderAll() {
+  renderTopbar();
+  renderDashboard();
+  renderTeam();
+  renderProduct();
+  renderMarket();
+  renderFinancials();
+  renderFundraise();
+  renderEvents();
+}
+
+function renderTopbar() {
+  const monthName = MONTHS[(gs.month - 1) % 12];
+  const year = Math.ceil(gs.month / 12);
+  document.getElementById('hdr-company').textContent = gs.companyName;
+  document.getElementById('hdr-turn').textContent = `${monthName} Y${year} · Month ${gs.month}`;
+  document.getElementById('hdr-cash').textContent = '$' + fmt(gs.cash);
+  document.getElementById('hdr-cash').className = 'metric-value' + (gs.cash < 20000 ? ' red' : gs.cash < 50000 ? ' yellow' : '');
+  document.getElementById('hdr-burn').textContent = '$' + fmt(Math.max(0, gs.salaries + gs.opsCost - gs.revenue));
+  document.getElementById('hdr-rev').textContent = '$' + fmt(gs.revenue);
+  document.getElementById('hdr-users').textContent = fmtNum(gs.users);
+  document.getElementById('hdr-val').textContent = '$' + fmtLarge(gs.valuation);
+}
+
+function renderDashboard() {
+  const runway = getRunwayMonths();
+  const runwayText = runway === Infinity ? 'Profitable ∞' : runway.toFixed(1) + ' months';
+  const runwayPct = runway === Infinity ? 100 : Math.min(100, (runway / 18) * 100);
+  const runwayColor = runway < 3 ? 'var(--red)' : runway < 6 ? 'var(--yellow)' : 'var(--green)';
+
+  document.getElementById('runway-label').textContent = runwayText;
+  document.getElementById('runway-fill').style.width = runwayPct + '%';
+  document.getElementById('runway-fill').style.background = runwayColor;
+
+  const kpiData = [
+    { title: 'Monthly Revenue', val: '$' + fmt(gs.revenue), sub: 'ARR: $' + fmtLarge(gs.revenue * 12), color: 'var(--green)' },
+    { title: 'Monthly Burn', val: '$' + fmt(gs.salaries + gs.opsCost), sub: 'Salaries + Ops', color: 'var(--red)' },
+    { title: 'Cash Balance', val: '$' + fmt(gs.cash), sub: 'In the bank', color: gs.cash < 30000 ? 'var(--red)' : 'var(--text)' },
+    { title: 'Active Users', val: fmtNum(gs.users), sub: `Churn: ${(gs.churn*100).toFixed(1)}%/mo`, color: 'var(--accent)' },
+    { title: 'Product Score', val: gs.productScore, sub: 'Features & quality', color: 'var(--yellow)' },
+    { title: 'Valuation', val: '$' + fmtLarge(gs.valuation), sub: 'Estimated', color: 'var(--yellow)' },
+    { title: 'Team Size', val: Object.values(gs.team).reduce((a,b)=>a+b,0), sub: `Morale: ${gs.morale}%`, color: 'var(--text)' },
+    { title: 'Market Share', val: ((gs.users / gs.industry.tam) * 100).toFixed(4) + '%', sub: 'TAM penetration', color: 'var(--accent)' },
+  ];
+
+  const grid = document.getElementById('kpi-grid');
+  grid.innerHTML = kpiData.map(k => `
+    <div class="kpi-card">
+      <div class="kpi-title">${k.title}</div>
+      <div class="kpi-val" style="color:${k.color}">${k.val}</div>
+      <div class="kpi-sub">${k.sub}</div>
+    </div>`).join('');
+
+  drawLineChart('cash-chart', cashHistory, 'var(--accent)');
+  drawLineChart('user-chart', userHistory, 'var(--green)');
+
+  // Feed
+  const feedEl = document.getElementById('feed-list');
+  feedEl.innerHTML = [...activityLog].reverse().slice(0, 20).map(item =>
+    `<div class="feed-item"><span class="feed-tag ${item.type}">${item.type}</span>${item.msg}</div>`
+  ).join('') || '<div style="color:var(--muted);font-size:13px">No activity yet.</div>';
+}
+
+function renderTeam() {
+  document.getElementById('payroll-tag').textContent = `Payroll: $${fmt(gs.salaries)}/mo`;
+  const grid = document.getElementById('role-grid');
+  grid.innerHTML = ROLES.map(role => {
+    const count = gs.team[role.id] || 0;
+    const canHire = !role.maxCount || count < role.maxCount;
+    return `
+    <div class="role-card">
+      <div class="role-header">
+        <div>
+          <div class="role-name">${role.name}</div>
+          <div style="color:var(--muted);font-size:12px;margin-top:2px">${role.desc}</div>
+        </div>
+        <div class="role-emoji">${role.emoji}</div>
+      </div>
+      <div class="role-stat"><span class="role-stat-label">Salary</span><span>$${fmt(role.salary)}/mo</span></div>
+      <div class="role-stat"><span class="role-stat-label">Product pts</span><span>+${role.productPts}/mo</span></div>
+      <div class="role-stat"><span class="role-stat-label">Sales pts</span><span>+${role.salesPts}/mo</span></div>
+      <div class="role-stat"><span class="role-stat-label">Count</span><span class="count-badge">${count}</span></div>
+      <div class="role-actions">
+        <button class="btn sm green" onclick="hire('${role.id}')" ${!canHire ? 'disabled style="opacity:.4"' : ''}>+ Hire</button>
+        <button class="btn sm danger" onclick="fire('${role.id}')" ${count === 0 ? 'disabled style="opacity:.4"' : ''}>− Fire</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  const moraleBar = document.getElementById('morale-bar');
+  moraleBar.style.width = gs.morale + '%';
+  moraleBar.style.background = gs.morale > 60 ? 'var(--green)' : gs.morale > 30 ? 'var(--yellow)' : 'var(--red)';
+  document.getElementById('morale-label').textContent = `${gs.morale}% — ${gs.morale > 70 ? 'Team is pumped!' : gs.morale > 40 ? 'Some tension...' : 'Team is burning out!'}`;
+  const faces = gs.morale > 70 ? '😄😄😄' : gs.morale > 40 ? '😐😐' : '😰';
+  document.getElementById('morale-faces').textContent = faces;
+}
+
+function renderProduct() {
+  document.getElementById('product-score-tag').textContent = `Score: ${gs.productScore}`;
+  const grid = document.getElementById('feature-grid');
+  grid.innerHTML = FEATURES.map(f => {
+    const unlocked = gs.activeFeatures.includes(f.id);
+    const inProgress = gs.pendingFeature && gs.pendingFeature.id === f.id;
+    const reqsMet = f.requires.every(r => gs.activeFeatures.includes(r));
+    const locked = !reqsMet && !unlocked && !inProgress;
+    const progress = inProgress ? Math.round((1 - gs.pendingFeature.turnsLeft / f.time) * 100) : unlocked ? 100 : 0;
+    const reqNames = f.requires.map(r => FEATURES.find(x=>x.id===r)?.name || r).join(', ');
+    return `
+    <div class="feature-card ${unlocked ? 'unlocked' : locked ? 'locked' : ''}">
+      ${unlocked ? '<span class="unlock-badge">✓ Live</span>' : ''}
+      ${inProgress ? `<span class="unlock-badge" style="background:rgba(255,209,102,.15);color:var(--yellow)">${gs.pendingFeature.turnsLeft}mo left</span>` : ''}
+      <div class="feature-name">${f.emoji} ${f.name}</div>
+      <div class="feature-desc">${f.desc}</div>
+      ${f.requires.length ? `<div style="font-size:11px;color:var(--muted);margin-bottom:8px">Requires: ${reqNames}</div>` : ''}
+      <div class="feature-cost">Cost: ${f.cost === 0 ? 'Free' : '$' + fmt(f.cost)} · Time: ${f.time === 0 ? 'Instant' : f.time + ' months'} · Score: +${f.score}</div>
+      <div class="feature-progress"><div class="feature-progress-fill" style="width:${progress}%"></div></div>
+      <button class="btn sm" onclick="investFeature('${f.id}')"
+        ${unlocked || inProgress || locked || gs.pendingFeature ? 'disabled style="opacity:.4"' : ''}>
+        ${unlocked ? 'Completed' : inProgress ? 'In Progress...' : locked ? 'Locked' : 'Start Development'}
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function renderMarket() {
+  const ind = gs.industry;
+  const competitors = [
+    { name: 'LeadCo', share: 35, color: 'var(--red)' },
+    { name: gs.companyName, share: Math.min(30, (gs.users / ind.tam) * 100 * 10000), color: 'var(--accent)' },
+    { name: 'GrowthHQ', share: 20, color: 'var(--yellow)' },
+    { name: 'Others', share: Math.max(10, 45 - (gs.users / ind.tam) * 100 * 10000), color: 'var(--muted)' },
+  ];
+
+  const grid = document.getElementById('market-grid');
+  grid.innerHTML = `
+    <div class="market-card">
+      <div class="market-title">Market Share</div>
+      ${competitors.map(c => `
+        <div class="bar-row">
+          <span class="bar-label">${c.name}</span>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,c.share)}%;background:${c.color}"></div></div>
+          <span class="bar-val">${c.share.toFixed(1)}%</span>
+        </div>`).join('')}
+    </div>
+    <div class="market-card">
+      <div class="market-title">Industry: ${ind.emoji} ${ind.name}</div>
+      <div class="role-stat"><span class="role-stat-label">TAM</span><span>$${fmtLarge(ind.tam)}</span></div>
+      <div class="role-stat"><span class="role-stat-label">ARPU</span><span>$${ind.arpu}/user/mo</span></div>
+      <div class="role-stat"><span class="role-stat-label">Your Users</span><span>${fmtNum(gs.users)}</span></div>
+      <div class="role-stat"><span class="role-stat-label">Your Revenue</span><span>$${fmt(gs.revenue)}/mo</span></div>
+      <div class="role-stat"><span class="role-stat-label">Churn Rate</span><span>${(gs.churn*100).toFixed(1)}%/mo</span></div>
+      <div class="role-stat"><span class="role-stat-label">Product Score</span><span>${gs.productScore}</span></div>
+    </div>
+    <div class="market-card">
+      <div class="market-title">Growth Drivers</div>
+      <div class="bar-row"><span class="bar-label">Product</span><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,gs.productScore)}%;background:var(--yellow)"></div></div><span class="bar-val">${gs.productScore}</span></div>
+      <div class="bar-row"><span class="bar-label">Sales</span><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,getTotalSalesPts()*5)}%;background:var(--green)"></div></div><span class="bar-val">${getTotalSalesPts().toFixed(0)}</span></div>
+      <div class="bar-row"><span class="bar-label">Morale</span><div class="bar-track"><div class="bar-fill" style="width:${gs.morale}%;background:var(--accent)"></div></div><span class="bar-val">${gs.morale}%</span></div>
+      <div class="bar-row"><span class="bar-label">Inv. Interest</span><div class="bar-track"><div class="bar-fill" style="width:${gs.investorInterest||0}%;background:var(--accent2)"></div></div><span class="bar-val">${(gs.investorInterest||0).toFixed(0)}%</span></div>
+    </div>`;
+}
+
+function renderFinancials() {
+  const tbody = document.getElementById('fin-tbody');
+  tbody.innerHTML = [...financialHistory].reverse().slice(0, 24).map(row => `
+    <tr>
+      <td>${row.month}</td>
+      <td class="pos">$${fmt(row.revenue)}</td>
+      <td class="neg">$${fmt(row.salaries)}</td>
+      <td class="neg">$${fmt(row.ops)}</td>
+      <td class="${row.net >= 0 ? 'pos' : 'neg'}">${row.net >= 0 ? '+' : ''}$${fmt(row.net)}</td>
+      <td>$${fmt(row.cash)}</td>
+    </tr>`).join('') || '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:20px">No history yet.</td></tr>';
+
+  // P&L summary
+  document.getElementById('pl-summary').innerHTML = `
+    <div class="role-stat"><span class="role-stat-label">Monthly Revenue</span><span class="pos">$${fmt(gs.revenue)}</span></div>
+    <div class="role-stat"><span class="role-stat-label">Salaries</span><span class="neg">−$${fmt(gs.salaries)}</span></div>
+    <div class="role-stat"><span class="role-stat-label">Operations</span><span class="neg">−$${fmt(gs.opsCost)}</span></div>
+    <div class="role-stat" style="border-top:1px solid var(--border);padding-top:8px;margin-top:4px">
+      <span class="role-stat-label">Net Monthly</span>
+      <span class="${gs.revenue - gs.salaries - gs.opsCost >= 0 ? 'pos' : 'neg'}" style="font-weight:700">
+        ${gs.revenue - gs.salaries - gs.opsCost >= 0 ? '+' : ''}$${fmt(gs.revenue - gs.salaries - gs.opsCost)}
+      </span>
+    </div>
+    <div class="role-stat"><span class="role-stat-label">ARR</span><span>$${fmtLarge(gs.revenue * 12)}</span></div>
+    <div class="role-stat"><span class="role-stat-label">Cash</span><span>$${fmt(gs.cash)}</span></div>
+  `;
+
+  drawBarChart('fin-chart', financialHistory.slice(-12));
+}
+
+function renderFundraise() {
+  const optEl = document.getElementById('raise-options');
+  optEl.innerHTML = FUNDING_ROUNDS.map(round => {
+    const raised = gs.raisedRounds.includes(round.id);
+    const canRaise = gs.productScore >= round.minScore && gs.month >= round.minMonth && !raised;
+    const scoreOk = gs.productScore >= round.minScore;
+    const timeOk = gs.month >= round.minMonth;
+    return `
+    <div class="raise-card" style="${raised ? 'opacity:.5' : ''}">
+      <div class="raise-title">${round.name} ${raised ? '✓ Closed' : ''}</div>
+      <div class="raise-desc">${round.desc}</div>
+      <div class="raise-terms">
+        <div class="raise-term"><div class="raise-term-label">Amount</div><div class="raise-term-val" style="color:var(--green)">$${fmtLarge(round.amount)}</div></div>
+        <div class="raise-term"><div class="raise-term-label">Dilution</div><div class="raise-term-val" style="color:var(--red)">${round.equity}%</div></div>
+        <div class="raise-term"><div class="raise-term-label">Min Score</div><div class="raise-term-val" style="color:${scoreOk?'var(--green)':'var(--red)'}">≥ ${round.minScore} ${scoreOk?'✓':'✗'}</div></div>
+        <div class="raise-term"><div class="raise-term-label">Min Month</div><div class="raise-term-val" style="color:${timeOk?'var(--green)':'var(--red)'}">Month ${round.minMonth}+ ${timeOk?'✓':'✗'}</div></div>
+      </div>
+      <button class="btn" onclick="raise('${round.id}')" ${!canRaise ? 'disabled style="opacity:.4"' : ''}>
+        ${raised ? 'Raised ✓' : canRaise ? 'Close Round' : 'Not Eligible'}
+      </button>
+    </div>`;
+  }).join('');
+
+  document.getElementById('cap-table').innerHTML = `
+    <div class="role-stat"><span class="role-stat-label">Founders</span><span>${gs.equity.toFixed(1)}%</span></div>
+    ${gs.raisedRounds.map(rid => {
+      const r = FUNDING_ROUNDS.find(x=>x.id===rid);
+      return `<div class="role-stat"><span class="role-stat-label">${r.name} investors</span><span>${r.equity}%</span></div>`;
+    }).join('')}
+    <div class="role-stat" style="font-weight:700"><span class="role-stat-label">Valuation</span><span style="color:var(--yellow)">$${fmtLarge(gs.valuation)}</span></div>
+  `;
+}
+
+function renderEvents() {
+  const list = document.getElementById('events-list');
+  const noEv = document.getElementById('no-events');
+  if (pendingEvents.length === 0) {
+    list.innerHTML = '';
+    noEv.style.display = 'block';
+    return;
+  }
+  noEv.style.display = 'none';
+  list.innerHTML = pendingEvents.map(ev => `
+    <div class="event-card">
+      <div class="event-header">
+        <div class="event-emoji">${ev.emoji}</div>
+        <div>
+          <div class="event-title">${ev.title}</div>
+          <span class="tag ${ev.type === 'good' ? 'success' : ev.type === 'bad' ? 'warning' : ''}" style="${ev.type==='info'?'background:rgba(108,99,255,.15);color:var(--accent)':''}">${ev.type.toUpperCase()}</span>
+        </div>
+      </div>
+      <div class="event-body">${ev.body}</div>
+      <div class="event-choices">
+        ${ev.choices.map((c, i) => `
+          <button class="choice-btn" onclick="resolveEvent('${ev.id}', ${i})">
+            ${c.label}
+            ${c.cost ? `<div class="choice-cost">Cost: $${fmt(c.cost)}</div>` : ''}
+          </button>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+//  CHARTS
+// ═══════════════════════════════════════════════════════
+
+function drawLineChart(canvasId, data, color) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  if (data.length < 2) return;
+  const min = Math.min(...data), max = Math.max(...data);
+  const range = max - min || 1;
+  const pad = 20;
+  const pts = data.map((v, i) => ({
+    x: pad + (i / (data.length - 1)) * (W - pad * 2),
+    y: H - pad - ((v - min) / range) * (H - pad * 2)
+  }));
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, color.replace(')', ', 0.3)').replace('var(', 'rgba(').replace(/[a-z-]+\)/, c => {
+    const map = { 'var(--accent)': 'rgba(108,99,255,0.3)', 'var(--green)': 'rgba(67,217,173,0.3)', 'var(--yellow)': 'rgba(255,209,102,0.3)', 'var(--red)': 'rgba(239,71,111,0.3)' };
+    return '';
+  }));
+  // Simpler gradient
+  const colorMap = { 'var(--accent)': '#6c63ff', 'var(--green)': '#43d9ad', 'var(--yellow)': '#ffd166', 'var(--red)': '#ef476f' };
+  const hexColor = colorMap[color] || '#6c63ff';
+  const grad2 = ctx.createLinearGradient(0, 0, 0, H);
+  grad2.addColorStop(0, hexColor + '44');
+  grad2.addColorStop(1, hexColor + '00');
+
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, H - pad);
+  pts.forEach(p => ctx.lineTo(p.x, p.y));
+  ctx.lineTo(pts[pts.length-1].x, H - pad);
+  ctx.closePath();
+  ctx.fillStyle = grad2;
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pts[0].y);
+  pts.forEach(p => ctx.lineTo(p.x, p.y));
+  ctx.strokeStyle = hexColor;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Axis labels
+  ctx.fillStyle = '#8892a4';
+  ctx.font = '10px system-ui';
+  ctx.fillText(fmtSmall(max), 2, pad + 4);
+  ctx.fillText(fmtSmall(min), 2, H - pad + 2);
+}
+
+function drawBarChart(canvasId, data) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || data.length === 0) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  const pad = 20;
+  const barW = Math.max(4, (W - pad * 2) / data.length / 2.5);
+  const maxVal = Math.max(...data.map(d => Math.max(d.revenue, d.salaries + d.ops)), 1);
+
+  data.forEach((d, i) => {
+    const x = pad + i * ((W - pad * 2) / data.length);
+    const revH = (d.revenue / maxVal) * (H - pad * 2);
+    const burnH = ((d.salaries + d.ops) / maxVal) * (H - pad * 2);
+    ctx.fillStyle = '#43d9ad88';
+    ctx.fillRect(x, H - pad - revH, barW, revH);
+    ctx.fillStyle = '#ef476f88';
+    ctx.fillRect(x + barW + 2, H - pad - burnH, barW, burnH);
+  });
+
+  ctx.fillStyle = '#8892a4';
+  ctx.font = '10px system-ui';
+  ctx.fillText('$' + fmtSmall(maxVal), 2, pad + 4);
+  ctx.fillText('■ Rev  ■ Burn', W - 90, H - 4);
+}
+
+// ═══════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════
+
+function fmt(n) { return Math.abs(Math.floor(n)).toLocaleString(); }
+function fmtNum(n) { if (n >= 1e6) return (n/1e6).toFixed(1)+'M'; if (n >= 1e3) return (n/1e3).toFixed(1)+'K'; return n.toString(); }
+function fmtLarge(n) { if (n >= 1e9) return (n/1e9).toFixed(2)+'B'; if (n >= 1e6) return (n/1e6).toFixed(1)+'M'; if (n >= 1e3) return (n/1e3).toFixed(0)+'K'; return n.toFixed(0); }
+function fmtSmall(n) { if (n >= 1e6) return (n/1e6).toFixed(1)+'M'; if (n >= 1e3) return (n/1e3).toFixed(0)+'K'; return Math.floor(n).toString(); }
+
+function log(msg, type='info') { activityLog.push({ msg, type, month: gs ? gs.month : 0 }); }
+
+function toast(msg, type='info') {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  document.querySelector(`[data-panel="${id}"]`).classList.add('active');
+  if (gs) renderAll();
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+
+buildIntro();
+</script>
+</body>
+</html>
