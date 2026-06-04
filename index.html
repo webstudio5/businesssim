@@ -21,12 +21,8 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; min-height: 100vh; }
-
-  /* SCREENS */
   .screen { display: none; }
   .screen.active { display: flex; }
-
-  /* ── INTRO ── */
   #intro { flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 24px; padding: 32px; }
   #intro h1 { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   #intro p.sub { color: var(--muted); font-size: 1.1rem; text-align: center; max-width: 480px; }
@@ -45,8 +41,6 @@
   .btn.ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
   .btn.sm { padding: 6px 14px; font-size: 13px; }
   .btn.green { background: var(--green); color: #0f1117; }
-
-  /* ── GAME LAYOUT ── */
   #game { flex-direction: column; min-height: 100vh; }
   .topbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; background: var(--surface); border-bottom: 1px solid var(--border); gap: 16px; flex-wrap: wrap; }
   .topbar-left { display: flex; align-items: center; gap: 16px; }
@@ -61,8 +55,6 @@
   .metric-value.red { color: var(--red); }
   .next-turn-btn { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 8px 20px; font-weight: 600; cursor: pointer; font-size: 14px; white-space: nowrap; }
   .next-turn-btn:hover { opacity: .85; }
-
-  /* MAIN CONTENT */
   .main { display: flex; flex: 1; overflow: hidden; }
   .sidebar { width: 200px; background: var(--surface); border-right: 1px solid var(--border); padding: 16px 0; flex-shrink: 0; }
   .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; cursor: pointer; color: var(--muted); transition: all .2s; font-size: 13px; }
@@ -70,32 +62,22 @@
   .nav-item.active { color: var(--text); background: rgba(108,99,255,.12); border-right: 3px solid var(--accent); }
   .nav-icon { font-size: 16px; width: 20px; text-align: center; }
   .content { flex: 1; overflow-y: auto; padding: 24px; }
-
-  /* PANELS */
   .panel { display: none; }
   .panel.active { display: block; }
   .panel-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
-
-  /* DASHBOARD */
   .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
   .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
   .kpi-title { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
   .kpi-val { font-size: 1.6rem; font-weight: 800; }
   .kpi-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
-  .kpi-delta { font-size: 12px; margin-top: 4px; }
-  .kpi-delta.up { color: var(--green); }
-  .kpi-delta.down { color: var(--red); }
-
   .runway-bar-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 24px; }
   .runway-bar-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; color: var(--muted); }
   .runway-bar-track { background: var(--surface2); border-radius: 4px; height: 10px; overflow: hidden; }
   .runway-bar-fill { height: 100%; border-radius: 4px; transition: width .5s; }
-
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .chart-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
   .chart-title { font-size: 12px; color: var(--muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .08em; }
   canvas { display: block; }
-
   .event-feed { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-top: 16px; max-height: 200px; overflow-y: auto; }
   .event-feed-title { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
   .feed-item { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--muted); display: flex; gap: 8px; }
@@ -104,8 +86,6 @@
   .feed-tag.good { background: rgba(67,217,173,.15); color: var(--green); }
   .feed-tag.bad { background: rgba(239,71,111,.15); color: var(--red); }
   .feed-tag.info { background: rgba(108,99,255,.15); color: var(--accent); }
-
-  /* TEAM PANEL */
   .role-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
   .role-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
   .role-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
@@ -116,8 +96,6 @@
   .role-stat-label { color: var(--muted); }
   .role-actions { display: flex; gap: 8px; margin-top: 12px; }
   .count-badge { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 12px; font-weight: 700; font-size: 15px; }
-
-  /* PRODUCT PANEL */
   .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
   .feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; position: relative; overflow: hidden; }
   .feature-card.unlocked { border-color: var(--green); }
@@ -128,18 +106,14 @@
   .feature-progress { background: var(--surface2); border-radius: 4px; height: 6px; margin-bottom: 12px; overflow: hidden; }
   .feature-progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width .3s; }
   .unlock-badge { position: absolute; top: 12px; right: 12px; background: rgba(67,217,173,.15); color: var(--green); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
-
-  /* MARKET PANEL */
   .market-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
   .market-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
   .market-title { font-weight: 700; margin-bottom: 12px; }
   .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 13px; }
-  .bar-label { width: 100px; color: var(--muted); flex-shrink: 0; }
+  .bar-label { width: 100px; color: var(--muted); flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .bar-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; }
   .bar-fill { height: 100%; border-radius: 4px; }
-  .bar-val { width: 40px; text-align: right; flex-shrink: 0; }
-
-  /* FINANCIALS */
+  .bar-val { width: 60px; text-align: right; flex-shrink: 0; font-size: 12px; }
   .fin-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
   .fin-table th { text-align: left; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; padding: 8px 12px; border-bottom: 1px solid var(--border); }
   .fin-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 13px; }
@@ -147,8 +121,6 @@
   .fin-table tr:hover td { background: var(--surface2); }
   .pos { color: var(--green); }
   .neg { color: var(--red); }
-
-  /* EVENTS PANEL */
   .event-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
   .event-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
   .event-emoji { font-size: 2rem; }
@@ -158,8 +130,6 @@
   .choice-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; cursor: pointer; text-align: left; transition: all .2s; font-size: 13px; color: var(--text); }
   .choice-btn:hover { border-color: var(--accent); background: rgba(108,99,255,.1); }
   .choice-cost { color: var(--yellow); font-size: 12px; margin-top: 4px; }
-
-  /* FUNDRAISING */
   .raise-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
   .raise-title { font-weight: 700; margin-bottom: 8px; font-size: 1rem; }
   .raise-desc { color: var(--muted); font-size: 13px; margin-bottom: 16px; line-height: 1.5; }
@@ -167,22 +137,15 @@
   .raise-term { background: var(--surface2); border-radius: 6px; padding: 10px; }
   .raise-term-label { font-size: 10px; color: var(--muted); text-transform: uppercase; }
   .raise-term-val { font-weight: 700; margin-top: 2px; }
-
-  /* WIN / LOSE */
   #endscreen { flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 24px; padding: 32px; }
   #endscreen h1 { font-size: 2.5rem; font-weight: 800; }
   #endscreen .result-card { width: 480px; text-align: center; }
-
-  /* NOTIFICATION TOAST */
   #toast-container { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 8px; z-index: 1000; }
   .toast { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; font-size: 13px; max-width: 320px; box-shadow: 0 4px 20px rgba(0,0,0,.4); animation: slide-in .3s ease; }
   .toast.good { border-color: var(--green); }
   .toast.bad { border-color: var(--red); }
   @keyframes slide-in { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--surface); } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
   .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
   .tag { font-size: 11px; padding: 2px 10px; border-radius: 10px; font-weight: 600; }
   .tag.warning { background: rgba(255,209,102,.15); color: var(--yellow); }
@@ -191,11 +154,30 @@
   .morale-faces { font-size: 1.5rem; letter-spacing: 2px; }
   .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
   .pill { font-size: 11px; padding: 3px 10px; border-radius: 10px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); }
+  /* Pressure bars */
+  .pressure-bar-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px; }
+  .pressure-bar-wrap.danger { border-color: var(--red); }
+  .pressure-bar-wrap.warn { border-color: var(--yellow); }
+  .pressure-bar-header { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12px; }
+  .pressure-bar-track { background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; }
+  .pressure-bar-fill { height: 100%; border-radius: 4px; transition: width .4s; }
+  /* Goals panel */
+  .goals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .goal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .goal-card.done { border-color: var(--green); }
+  .goal-card.locked { opacity: .55; }
+  .goal-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .goal-hint { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  /* Rival cards */
+  .rival-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
+  .rival-card.raised { border-color: var(--red); }
+  .rival-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .rival-name { font-weight: 700; font-size: 15px; }
+  .rival-badges { display: flex; gap: 6px; }
 </style>
 </head>
 <body>
 
-<!-- INTRO SCREEN -->
 <div id="intro" class="screen active">
   <h1>Founder Mode</h1>
   <p class="sub">Build a startup from a napkin sketch to a billion-dollar exit — before your runway runs out.</p>
@@ -222,7 +204,6 @@
   </div>
 </div>
 
-<!-- GAME SCREEN -->
 <div id="game" class="screen">
   <div class="topbar">
     <div class="topbar-left">
@@ -230,32 +211,14 @@
       <span class="turn-badge" id="hdr-turn"></span>
     </div>
     <div class="metrics-bar">
-      <div class="metric">
-        <span class="metric-label">Cash</span>
-        <span class="metric-value" id="hdr-cash"></span>
-      </div>
-      <div class="metric">
-        <span class="metric-label">Gross Burn</span>
-        <span class="metric-value red" id="hdr-burn"></span>
-      </div>
-      <div class="metric">
-        <span class="metric-label">Revenue/mo</span>
-        <span class="metric-value green" id="hdr-rev"></span>
-      </div>
-      <div class="metric">
-        <span class="metric-label">Net/mo</span>
-        <span class="metric-value" id="hdr-net"></span>
-      </div>
-      <div class="metric">
-        <span class="metric-label">Users</span>
-        <span class="metric-value" id="hdr-users"></span>
-      </div>
-      <div class="metric">
-        <span class="metric-label">Valuation</span>
-        <span class="metric-value yellow" id="hdr-val"></span>
-      </div>
+      <div class="metric"><span class="metric-label">Cash</span><span class="metric-value" id="hdr-cash"></span></div>
+      <div class="metric"><span class="metric-label">Gross Burn</span><span class="metric-value red" id="hdr-burn"></span></div>
+      <div class="metric"><span class="metric-label">Revenue/mo</span><span class="metric-value green" id="hdr-rev"></span></div>
+      <div class="metric"><span class="metric-label">Net/mo</span><span class="metric-value" id="hdr-net"></span></div>
+      <div class="metric"><span class="metric-label">Users</span><span class="metric-value" id="hdr-users"></span></div>
+      <div class="metric"><span class="metric-label">Valuation</span><span class="metric-value yellow" id="hdr-val"></span></div>
     </div>
-    <button class="next-turn-btn" onclick="nextTurn()">▶ Next Month</button>
+    <button class="next-turn-btn" onclick="nextTurn()">&#9654; Next Month</button>
   </div>
   <div class="main">
     <div class="sidebar">
@@ -265,31 +228,23 @@
       <div class="nav-item" onclick="showPanel('market')" data-panel="market"><span class="nav-icon">📈</span>Market</div>
       <div class="nav-item" onclick="showPanel('financials')" data-panel="financials"><span class="nav-icon">💰</span>Financials</div>
       <div class="nav-item" onclick="showPanel('fundraise')" data-panel="fundraise"><span class="nav-icon">🤝</span>Fundraise</div>
+      <div class="nav-item" onclick="showPanel('goals')" data-panel="goals"><span class="nav-icon">🎯</span>Goals</div>
       <div class="nav-item" onclick="showPanel('events')" data-panel="events"><span class="nav-icon">⚡</span>Events <span id="event-badge" style="display:none;background:var(--red);color:#fff;border-radius:10px;font-size:10px;padding:1px 6px;margin-left:4px"></span></div>
     </div>
     <div class="content">
+
       <!-- DASHBOARD -->
       <div id="panel-dashboard" class="panel active">
         <div class="panel-title">Dashboard</div>
+        <div id="pressure-bars"></div>
         <div class="kpi-grid" id="kpi-grid"></div>
         <div class="runway-bar-wrap">
-          <div class="runway-bar-label">
-            <span>Runway</span>
-            <span id="runway-label"></span>
-          </div>
-          <div class="runway-bar-track">
-            <div class="runway-bar-fill" id="runway-fill"></div>
-          </div>
+          <div class="runway-bar-label"><span>Runway</span><span id="runway-label"></span></div>
+          <div class="runway-bar-track"><div class="runway-bar-fill" id="runway-fill"></div></div>
         </div>
         <div class="two-col">
-          <div class="chart-box">
-            <div class="chart-title">Cash Over Time ($)</div>
-            <canvas id="cash-chart" width="380" height="160"></canvas>
-          </div>
-          <div class="chart-box">
-            <div class="chart-title">Users Over Time</div>
-            <canvas id="user-chart" width="380" height="160"></canvas>
-          </div>
+          <div class="chart-box"><div class="chart-title">Cash Over Time ($)</div><canvas id="cash-chart" width="380" height="160"></canvas></div>
+          <div class="chart-box"><div class="chart-title">Users Over Time</div><canvas id="user-chart" width="380" height="160"></canvas></div>
         </div>
         <div class="event-feed">
           <div class="event-feed-title">Activity Log</div>
@@ -306,18 +261,17 @@
         <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Each role contributes to product, sales, or operations. Morale affects productivity.</p>
         <div class="role-grid" id="role-grid"></div>
         <hr class="divider">
-        <div style="display:flex;align-items:center;gap:16px;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
           <div>
             <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Team Morale</div>
             <div class="morale-faces" id="morale-faces"></div>
           </div>
           <div style="flex:1">
-            <div class="bar-track" style="height:12px">
-              <div class="bar-fill" id="morale-bar" style="background:var(--green)"></div>
-            </div>
+            <div class="bar-track" style="height:12px"><div class="bar-fill" id="morale-bar" style="background:var(--green)"></div></div>
             <div style="font-size:12px;color:var(--muted);margin-top:4px" id="morale-label"></div>
           </div>
         </div>
+        <div id="team-extra-stats"></div>
       </div>
 
       <!-- PRODUCT -->
@@ -333,21 +287,15 @@
       <!-- MARKET -->
       <div id="panel-market" class="panel">
         <div class="panel-title">Market Overview</div>
-        <div class="market-grid" id="market-grid"></div>
+        <div id="market-grid" class="market-grid"></div>
       </div>
 
       <!-- FINANCIALS -->
       <div id="panel-financials" class="panel">
         <div class="panel-title">Financials</div>
         <div class="two-col" style="margin-bottom:20px">
-          <div class="chart-box">
-            <div class="chart-title">Monthly Revenue vs Burn</div>
-            <canvas id="fin-chart" width="380" height="160"></canvas>
-          </div>
-          <div class="chart-box">
-            <div class="chart-title">P&amp;L Summary</div>
-            <div id="pl-summary" style="margin-top:8px"></div>
-          </div>
+          <div class="chart-box"><div class="chart-title">Monthly Revenue vs Burn</div><canvas id="fin-chart" width="380" height="160"></canvas></div>
+          <div class="chart-box"><div class="chart-title">P&amp;L Summary</div><div id="pl-summary" style="margin-top:8px"></div></div>
         </div>
         <div class="card">
           <table class="fin-table" id="fin-table">
@@ -363,10 +311,14 @@
         <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Raise capital to extend your runway. Each round dilutes your equity but buys time to grow.</p>
         <div id="raise-options"></div>
         <hr class="divider">
-        <div class="card">
-          <div style="font-weight:700;margin-bottom:8px">Cap Table</div>
-          <div id="cap-table"></div>
-        </div>
+        <div class="card"><div style="font-weight:700;margin-bottom:8px">Cap Table</div><div id="cap-table"></div></div>
+      </div>
+
+      <!-- GOALS -->
+      <div id="panel-goals" class="panel">
+        <div class="panel-title">Milestones &amp; Goals</div>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Track your journey from scrappy startup to market leader. Each milestone unlocks new opportunities.</p>
+        <div class="goals-grid" id="goals-grid"></div>
       </div>
 
       <!-- EVENTS -->
@@ -375,11 +327,11 @@
         <div id="events-list"></div>
         <div id="no-events" style="color:var(--muted);text-align:center;padding:40px;display:none">No pending events — advance to the next month to trigger new ones.</div>
       </div>
+
     </div>
   </div>
 </div>
 
-<!-- END SCREEN -->
 <div id="endscreen" class="screen">
   <h1 id="end-title"></h1>
   <div class="card result-card">
@@ -425,6 +377,33 @@ const FEATURES = [
   { id: 'platform', name: 'Platform / Marketplace', emoji: '🏪', desc: 'Network effects, flywheel growth.', cost: 120000, time: 5, score: 40, unlocked: false, requires: ['enterprise', 'intl'] },
 ];
 
+const MILESTONES = [
+  { id: 'first_users', title: 'First 100 Users', emoji: '👤', hint: 'Reach 100 active users', check: gs => gs.users >= 100,
+    reward: gs => { toast('🎉 First 100 users! The product works!', 'good'); log('Milestone: First 100 users reached!', 'good'); } },
+  { id: 'mrr_10k', title: '$10k MRR', emoji: '💵', hint: 'Reach $10,000 monthly revenue', check: gs => gs.revenue >= 10000,
+    reward: gs => { gs.investorInterest = Math.min(100, (gs.investorInterest||0)+20); toast('MRR $10k! Investor interest +20', 'good'); log('Milestone: $10k MRR — investors taking notice', 'good'); } },
+  { id: 'first_profit', title: 'First Profitable Month', emoji: '📈', hint: 'Revenue exceeds all costs in one month', check: gs => gs.revenue > gs.salaries + gs.opsCost,
+    reward: gs => { gs.rivals.forEach(r => r.aggressiveness *= 1.2); toast('⚠️ Profitable! Rivals are getting aggressive.', 'bad'); log('Milestone: First profit — rivals react!', 'bad'); } },
+  { id: 'users_1k', title: '1,000 Users', emoji: '🔥', hint: 'Reach 1,000 active users', check: gs => gs.users >= 1000,
+    reward: gs => { gs.cash += 5000; toast('1k users! Press bonus +$5k cash', 'good'); log('Milestone: 1,000 users — press coverage!', 'good'); } },
+  { id: 'seed_closed', title: 'Seed Round Closed', emoji: '🌱', hint: 'Successfully close a Seed funding round', check: gs => gs.raisedRounds.includes('seed'),
+    reward: gs => { gs.opsCost += 2000; toast('Seed closed! Scaling costs increase.', 'info'); log('Milestone: Seed closed — ops costs rising', 'info'); } },
+  { id: 'team_10', title: 'Team of 10', emoji: '🏢', hint: 'Build a team of 10 people', check: gs => Object.values(gs.team).reduce((a,b)=>a+b,0) >= 10,
+    reward: gs => { gs.morale = Math.min(100, gs.morale+10); toast('Team of 10! Morale +10', 'good'); log('Milestone: Team reaches 10 people', 'good'); } },
+  { id: 'beat_rival', title: 'Beat a Rival', emoji: '⚔️', hint: 'Surpass any rival in user count', check: gs => gs.rivals.some(r => gs.users > r.users),
+    reward: gs => { gs.investorInterest = Math.min(100, (gs.investorInterest||0)+15); toast('You beat a rival! Investor interest +15', 'good'); log('Milestone: Surpassed a rival in users!', 'good'); } },
+  { id: 'mrr_100k', title: '$100k MRR', emoji: '💰', hint: 'Reach $100,000 monthly revenue', check: gs => gs.revenue >= 100000,
+    reward: gs => { gs.acquisitionEnabled = true; toast('$100k MRR — acquisition offers incoming!', 'good'); log('Milestone: $100k MRR — acquisition market opens', 'good'); } },
+  { id: 'series_a_closed', title: 'Series A Closed', emoji: '🚀', hint: 'Successfully close a Series A round', check: gs => gs.raisedRounds.includes('series_a'),
+    reward: gs => { gs.boardPressureActive = true; toast('Series A closed! Board pressure now active.', 'info'); log('Milestone: Series A — board pressure activates', 'info'); } },
+  { id: 'valuation_100m', title: '$100M Valuation', emoji: '🦄', hint: 'Reach a $100 million valuation', check: gs => gs.valuation >= 1e8,
+    reward: gs => { toast('🦄 $100M valuation! Win path visible!', 'good'); log('Milestone: $100M valuation — unicorn path opening', 'good'); } },
+  { id: 'users_10k', title: '10,000 Users', emoji: '🌊', hint: 'Reach 10,000 active users', check: gs => gs.users >= 10000,
+    reward: gs => { gs.rivals.forEach(r => { r.aggressiveness *= 1.3; r.productScore += 3; }); toast('10k users! Rivals react strongly!', 'bad'); log('Milestone: 10k users — rivals double down', 'bad'); } },
+  { id: 'platform_launch', title: 'Platform Launched', emoji: '🏪', hint: 'Launch the Platform/Marketplace feature', check: gs => gs.activeFeatures.includes('platform'),
+    reward: gs => { gs.users = Math.floor(gs.users * 1.3); gs.productScore += 5; toast('Platform launched! Growth burst! +30% users', 'good'); log('Milestone: Platform live — network effects kick in', 'good'); } },
+];
+
 const EVENTS_POOL = [
   // GOOD
   { id: 'press', type: 'good', emoji: '📰', title: 'Viral Press Coverage', body: 'A major tech blog wrote about you. Traffic is spiking.',
@@ -465,7 +444,7 @@ const EVENTS_POOL = [
   { id: 'recession', type: 'bad', emoji: '📉', title: 'Market Downturn', body: 'Economic headwinds are hitting growth across the industry.',
     choices: [{ label: 'Cut costs aggressively (lay off 1 role)', cost: 0, effect: gs => { const roles = Object.keys(gs.team).filter(r=>gs.team[r]>0); if(roles.length){ const r=roles[0]; gs.team[r]--; const role=ROLES.find(x=>x.id===r); if(role){gs.salaries-=role.salary;} gs.morale-=20; toast('Downsized team, morale hit.','bad');} } },
               { label: 'Stay lean, reduce marketing spend', cost: 0, effect: gs => { gs.users = Math.floor(gs.users*0.95); toast('Growth slowed but team intact.','info'); } }] },
-  // NEUTRAL / OPPORTUNITY
+  // NEUTRAL
   { id: 'acquisition', type: 'info', emoji: '💰', title: 'Acquisition Offer', body: 'A larger company just offered to buy you out.',
     choices: [{ label: 'Accept the offer (triggers win condition!)', cost: 0, effect: gs => { gs.acquired = true; toast('Deal closed! Congratulations!', 'good'); } },
               { label: 'Decline — we\'re building for IPO', cost: 0, effect: gs => { toast('Turned down the offer. Eyes on the prize.', 'info'); } }] },
@@ -477,6 +456,49 @@ const EVENTS_POOL = [
   { id: 'vc_meeting', type: 'info', emoji: '🤑', title: 'VC Cold Outreach', body: 'A top-tier VC wants a meeting. Good timing could mean a term sheet.',
     choices: [{ label: 'Take the meeting', cost: 0, effect: gs => { gs.investorInterest = Math.min(100, (gs.investorInterest||0)+25); toast('Investor interest increased!', 'good'); } },
               { label: 'Not ready yet', cost: 0, effect: gs => {} }] },
+  // NEW EVENTS
+  { id: 'data_breach', type: 'bad', emoji: '🔓', title: 'Data Breach', body: 'A hacker exposed 50k user records. The press is covering it and users are angry.',
+    choices: [{ label: 'Pay for emergency security audit ($20k)', cost: 20000, effect: gs => { toast('Security audit complete. Trust slowly rebuilds.', 'good'); log('Paid $20k for security audit after breach', 'bad'); } },
+              { label: 'Ignore it and hope it blows over', cost: 0, effect: gs => { if(Math.random() < 0.3){ gs.cash -= 40000; gs.churn += 0.03; toast('Regulatory fine! -$40k + churn spike!', 'bad'); log('Regulatory fine from data breach: -$40k', 'bad'); } else { gs.churn += 0.015; toast('Escaped fine but churn rising.', 'bad'); } } }] },
+  { id: 'cofounder_dispute', type: 'bad', emoji: '😤', title: 'Co-founder Equity Dispute', body: 'Your co-founder wants a bigger equity slice and is threatening to walk.',
+    choices: [{ label: 'Give them 5% extra equity', cost: 0, effect: gs => { gs.equity = Math.max(0, gs.equity - 5); toast('Dispute resolved. Equity conceded.', 'info'); log('Co-founder dispute: gave 5% equity', 'info'); } },
+              { label: 'Let the conflict simmer', cost: 0, effect: gs => { gs.cofounderMorale = Math.max(0, gs.cofounderMorale - 30); gs.morale = Math.max(0, gs.morale - 15); toast('Tension simmering. Morale dipping.', 'bad'); log('Co-founder dispute unresolved: morale hit', 'bad'); } }] },
+  { id: 'board_pressure_meeting', type: 'bad', emoji: '👔', title: 'Board Pressure Meeting', body: 'The board is concerned about growth metrics and calling an emergency meeting.',
+    choices: [{ label: 'Commit to aggressive targets (ops +$2k/mo)', cost: 0, effect: gs => { gs.opsCost += 2000; gs.boardPressure = Math.max(0, (gs.boardPressure||0) - 20); toast('Board appeased. Costs rise.', 'info'); log('Board meeting: committed to targets, ops +$2k', 'info'); } },
+              { label: 'Reassure them with data', cost: 0, effect: gs => { gs.investorInterest = Math.max(0, (gs.investorInterest||0) - 20); toast('Board skeptical. Investor interest -20.', 'bad'); log('Board meeting: reassured board, investor interest -20', 'bad'); } }] },
+  { id: 'tech_debt_crisis', type: 'bad', emoji: '💥', title: 'Tech Debt Crisis', body: 'The codebase is crumbling under its own weight. Engineers are revolting.',
+    choices: [{ label: 'Emergency refactor sprint ($15k)', cost: 15000, effect: gs => { gs.technicalDebt = Math.max(0, gs.technicalDebt - 40); toast('Refactor complete! Tech debt -40.', 'good'); log('Tech debt crisis: paid $15k for refactor', 'good'); } },
+              { label: 'Push through — ship features anyway', cost: 0, effect: gs => { gs.productScore = Math.max(0, gs.productScore - 8); gs.morale = Math.max(0, gs.morale - 20); toast('Product score -8, morale -20.', 'bad'); log('Tech debt crisis: pushed through, penalties apply', 'bad'); } }] },
+  { id: 'rival_poach', type: 'bad', emoji: '🕵️', title: 'Rival Poaching Engineers', body: 'LeadCo is aggressively recruiting your engineers with 2x salary offers.',
+    choices: [{ label: 'Retention bonuses ($5k one-time)', cost: 5000, effect: gs => { gs.morale = Math.min(100, gs.morale + 10); toast('Team retained! Morale +10.', 'good'); log('Rival poach: paid $5k retention bonuses', 'good'); } },
+              { label: 'Accept the losses', cost: 0, effect: gs => { if((gs.team.engineer||0) > 0){ gs.team.engineer--; gs.salaries -= 8000; toast('Lost an engineer. Velocity drops.', 'bad'); log('Rival poach: lost 1 engineer to competitor', 'bad'); } else { toast('No engineers to lose — crisis avoided.', 'info'); } } }] },
+  { id: 'customer_viral', type: 'good', emoji: '🚀', title: 'Customer Tweet Goes Viral', body: 'A customer tweet about your product went mega-viral with 2M impressions.',
+    choices: [{ label: 'Capitalise with ad spend ($8k)', cost: 8000, effect: gs => { gs.users = Math.floor(gs.users * 1.5); toast('Viral moment capitalised! Users x1.5!', 'good'); log('Viral tweet: spent $8k, users +50%', 'good'); } },
+              { label: 'Ride the wave naturally', cost: 0, effect: gs => { gs.users = Math.floor(gs.users * 1.2); toast('Organic viral growth! Users +20%.', 'good'); log('Viral tweet: organic growth +20%', 'good'); } }] },
+  { id: 'acqui_hire', type: 'good', emoji: '🤗', title: 'Acqui-hire Opportunity', body: 'A talented 3-person team is willing to join your company in exchange for equity.',
+    choices: [{ label: 'Absorb them (2 engineers + 1 designer, -3% equity)', cost: 0, effect: gs => { gs.team.engineer = (gs.team.engineer||0)+2; gs.team.designer = (gs.team.designer||0)+1; gs.salaries += 18000; gs.equity = Math.max(0, gs.equity-3); toast('Acqui-hire complete! +2 engineers +1 designer', 'good'); log('Acqui-hired 3-person team: -3% equity, +$18k salary', 'good'); } },
+              { label: 'Pass on the offer', cost: 0, effect: gs => {} }] },
+  { id: 'market_expansion', type: 'info', emoji: '🌍', title: 'Geographic Expansion', body: 'You have an opportunity to expand into a high-growth international market.',
+    choices: [{ label: 'Invest in localisation ($30k)', cost: 30000, effect: gs => { gs.users = Math.floor(gs.users * 1.3); gs.opsCost += 3000; toast('Expanded! Users +30%, ops +$3k/mo.', 'good'); log('Market expansion: $30k, users +30%, ops +$3k/mo', 'good'); } },
+              { label: 'Stay focused on core market', cost: 0, effect: gs => {} }] },
+  { id: 'key_customer_churns', type: 'bad', emoji: '😱', title: 'Key Customer Cancels', body: 'Your biggest enterprise customer just cancelled their contract without warning.',
+    choices: [{ label: 'Emergency account save ($10k, 60% success)', cost: 10000, effect: gs => { if(Math.random() < 0.6){ toast('Account saved! Revenue restored.', 'good'); log('Enterprise save succeeded: $10k spent', 'good'); } else { gs.revenue = Math.max(0, gs.revenue - 15000); toast('Save failed. Revenue -$15k/mo.', 'bad'); log('Enterprise save failed: revenue -$15k/mo', 'bad'); } } },
+              { label: 'Accept the loss', cost: 0, effect: gs => { gs.revenue = Math.max(0, gs.revenue - 15000); toast('Lost enterprise contract. Revenue -$15k/mo.', 'bad'); log('Enterprise customer churned: revenue -$15k/mo', 'bad'); } }] },
+  { id: 'office_lease', type: 'bad', emoji: '🏢', title: 'Office Lease Renewal', body: 'Your office lease ends. WeWork wants double the rent for renewal.',
+    choices: [{ label: 'Sign new lease (ops +$4k/mo)', cost: 0, effect: gs => { gs.opsCost += 4000; toast('Lease signed. Ops costs up $4k/mo.', 'info'); log('Office lease renewed: ops +$4k/mo', 'info'); } },
+              { label: 'Go fully remote', cost: 0, effect: gs => { gs.morale = Math.max(0, gs.morale - 10); gs.productScore += 3; toast('Remote! Focus boost +3 product score, morale -10.', 'info'); log('Went fully remote: product +3, morale -10', 'info'); } }] },
+  { id: 'open_source_threat', type: 'bad', emoji: '💻', title: 'Open-Source Alternative', body: 'An open-source clone of your product just launched and is gaining traction fast.',
+    choices: [{ label: 'Donate & differentiate ($5k, product +4)', cost: 5000, effect: gs => { gs.productScore += 4; toast('Differentiated! Product score +4.', 'good'); log('Open source threat: donated, product score +4', 'good'); } },
+              { label: 'Ignore it', cost: 0, effect: gs => { gs.users = Math.floor(gs.users * 0.93); toast('Open source taking users. -7% users.', 'bad'); log('Open source threat ignored: users -7%', 'bad'); } }] },
+  { id: 'angel_syndicate', type: 'good', emoji: '😇', title: 'Angel Syndicate Offer', body: 'An angel syndicate wants to co-invest at a higher valuation than your last round.',
+    choices: [{ label: 'Accept ($75k cash, -4% equity)', cost: 0, effect: gs => { gs.cash += 75000; gs.equity = Math.max(0, gs.equity - 4); toast('Angel syndicate closed! +$75k, -4% equity.', 'good'); log('Angel syndicate: +$75k, -4% equity', 'good'); } },
+              { label: 'Wait for a lead investor', cost: 0, effect: gs => {} }] },
+  { id: 'rival_reaction', type: 'bad', emoji: '⚠️', title: 'Rival Raises Emergency Round', body: 'A rival startup just raised a massive round in response to your growth. They\'re coming for you.',
+    choices: [{ label: 'Accelerate hiring ($20k, team morale +5)', cost: 20000, effect: gs => { gs.morale = Math.min(100, gs.morale+5); toast('Hired aggressively to stay ahead!', 'good'); } },
+              { label: 'Focus on product quality instead', cost: 0, effect: gs => { gs.productScore += 3; toast('Double down on product quality. +3 score.', 'info'); } }] },
+  { id: 'burnout_crisis', type: 'bad', emoji: '🏥', title: 'Team Burnout Crisis', body: 'Multiple team members are showing signs of severe burnout. Productivity is crashing.',
+    choices: [{ label: 'Mandatory team reset week ($8k, morale +25)', cost: 8000, effect: gs => { gs.morale = Math.min(100, gs.morale+25); gs.burnoutRisk = Math.max(0, gs.burnoutRisk-30); toast('Team recovered! Morale +25.', 'good'); log('Burnout crisis: paid $8k for reset, morale +25', 'good'); } },
+              { label: 'Push through the crunch', cost: 0, effect: gs => { gs.morale = Math.max(0, gs.morale-20); gs.productScore = Math.max(0, gs.productScore-5); toast('Burnout worsens. Morale -20, product -5.', 'bad'); log('Burnout crisis ignored: morale -20, product -5', 'bad'); } }] },
 ];
 
 const FUNDING_ROUNDS = [
@@ -505,9 +527,7 @@ function initState(companyName, industry, difficulty) {
   const diffMap = { easy: { cash: 200000, ops: 3000 }, normal: { cash: 100000, ops: 5000 }, hard: { cash: 50000, ops: 8000 } };
   const diff = diffMap[difficulty];
   return {
-    companyName,
-    industry,
-    difficulty,
+    companyName, industry, difficulty,
     month: 1,
     cash: diff.cash,
     revenue: 0,
@@ -528,6 +548,23 @@ function initState(companyName, industry, difficulty) {
     acquired: false,
     won: false,
     lost: false,
+    // New systems
+    rivals: [
+      { id: 'leadco', name: 'LeadCo', emoji: '🔴', users: 500, productScore: 8, aggressiveness: 1.1, funding: 5000000, raisedSeries: false, dormant: false },
+      { id: 'growthhq', name: 'GrowthHQ', emoji: '🟡', users: 150, productScore: 4, aggressiveness: 0.8, funding: 1000000, raisedSeries: false, dormant: false },
+      { id: 'nexacorp', name: 'NexaCorp', emoji: '🟢', users: 30, productScore: 2, aggressiveness: 0.6, funding: 200000, raisedSeries: false, dormant: false },
+    ],
+    milestonesDone: [],
+    technicalDebt: 0,
+    boardPressure: 0,
+    boardPressureActive: false,
+    profitableMonths: 0,
+    prevRevenue: 0,
+    cofounderMorale: 85,
+    burnoutRisk: 0,
+    consecutiveLowMoraleMonths: 0,
+    cofounderDisputeFired: false,
+    acquisitionEnabled: false,
   };
 }
 
@@ -549,7 +586,6 @@ function buildIntro() {
     };
     grid.appendChild(btn);
   });
-  // Default select first
   grid.children[0].click();
 }
 
@@ -576,10 +612,9 @@ function startGame() {
 
 function nextTurn() {
   if (gs.pendingFeature) {
-    // tick feature progress
-    const f = FEATURES.find(x => x.id === gs.pendingFeature.id);
     gs.pendingFeature.turnsLeft--;
     if (gs.pendingFeature.turnsLeft <= 0) {
+      const f = FEATURES.find(x => x.id === gs.pendingFeature.id);
       gs.activeFeatures.push(f.id);
       gs.productScore += f.score;
       gs.pendingFeature = null;
@@ -589,6 +624,8 @@ function nextTurn() {
   }
 
   processMonth();
+  processRivals();
+  checkMilestones();
   gs.month++;
   generateEvent();
   checkWinLose();
@@ -602,43 +639,149 @@ function nextTurn() {
 
 function processMonth() {
   const ind = gs.industry;
-  // User growth driven by product score, sales staff, and morale
   const salesPower = getTotalSalesPts();
   const moraleMultiplier = gs.morale / 100;
-  const baseGrowth = (gs.productScore * 0.8 + salesPower * 2.5) * moraleMultiplier;
+
+  // Technical debt penalty
+  let growthPenalty = 1;
+  if (gs.technicalDebt > 60) {
+    gs.productScore = Math.max(1, gs.productScore - 0.3);
+    growthPenalty = 0.85;
+  }
+
+  const baseGrowth = (gs.productScore * 0.8 + salesPower * 2.5) * moraleMultiplier * growthPenalty;
   const newUsers = Math.floor(baseGrowth * (1 + Math.random() * 0.3));
   const churnedUsers = Math.floor(gs.users * gs.churn);
   gs.users = Math.max(0, gs.users + newUsers - churnedUsers);
 
-  // Revenue
-  const arpu = ind.arpu;
-  gs.revenue = Math.floor(gs.users * arpu * (1 + gs.productScore / 200));
+  gs.revenue = Math.floor(gs.users * ind.arpu * (1 + gs.productScore / 200));
 
-  // Costs
   const totalCosts = gs.salaries + gs.opsCost;
   const net = gs.revenue - totalCosts;
   gs.cash += net;
 
-  // Valuation (revenue multiple + product score)
+  // Profitable months counter
+  if (net > 0) {
+    gs.profitableMonths++;
+    if (gs.profitableMonths === 3) {
+      gs.rivals.forEach(r => r.aggressiveness *= 1.1);
+      log('3 profitable months: rivals getting competitive', 'info');
+    }
+    if (gs.profitableMonths === 6) {
+      gs.churn += 0.005;
+      log('6 profitable months: market getting more competitive, churn +0.5%', 'bad');
+    }
+  } else {
+    gs.profitableMonths = 0;
+  }
+
+  // Board pressure
+  if (gs.boardPressureActive) {
+    if (gs.revenue > gs.prevRevenue) {
+      gs.boardPressure = Math.max(0, gs.boardPressure - 5);
+    } else {
+      gs.boardPressure = Math.min(100, gs.boardPressure + 8);
+    }
+    if (gs.boardPressure > 80) {
+      const alreadyQueued = pendingEvents.some(e => e.id === 'board_pressure_meeting');
+      if (!alreadyQueued) {
+        const ev = EVENTS_POOL.find(e => e.id === 'board_pressure_meeting');
+        if (ev) pendingEvents.push({ ...ev, choices: ev.choices.map(c => ({...c})) });
+        updateEventBadge();
+      }
+    }
+  }
+  gs.prevRevenue = gs.revenue;
+
+  // Technical debt growth
+  const engineerCount = gs.team.engineer || 0;
+  gs.technicalDebt = Math.min(100, gs.technicalDebt + Math.max(0, 3 - engineerCount));
+
+  // Team drama
+  if (gs.morale < 40) {
+    gs.consecutiveLowMoraleMonths++;
+    gs.burnoutRisk = Math.min(100, gs.burnoutRisk + 8);
+  } else {
+    gs.consecutiveLowMoraleMonths = 0;
+    gs.burnoutRisk = Math.max(0, gs.burnoutRisk - 3);
+  }
+
+  if (gs.burnoutRisk > 70) {
+    const alreadyQueued = pendingEvents.some(e => e.id === 'burnout_crisis');
+    if (!alreadyQueued) {
+      const ev = EVENTS_POOL.find(e => e.id === 'burnout_crisis');
+      if (ev) pendingEvents.push({ ...ev, choices: ev.choices.map(c => ({...c})) });
+      updateEventBadge();
+    }
+    gs.burnoutRisk = 30; // reset after firing
+  }
+
+  if (gs.morale < 50) {
+    gs.cofounderMorale = Math.max(0, gs.cofounderMorale - 2);
+  } else if (gs.morale > 70) {
+    gs.cofounderMorale = Math.min(100, gs.cofounderMorale + 1);
+  }
+
+  if (gs.cofounderMorale < 40 && !gs.cofounderDisputeFired) {
+    gs.cofounderDisputeFired = true;
+    const ev = EVENTS_POOL.find(e => e.id === 'cofounder_dispute');
+    if (ev) pendingEvents.push({ ...ev, choices: ev.choices.map(c => ({...c})) });
+    updateEventBadge();
+  }
+
+  // Valuation
   const revMultiple = gs.revenue > 0 ? (gs.raisedRounds.length > 0 ? 10 : 6) : 1;
   gs.valuation = Math.max(500000, gs.revenue * revMultiple * 12 + gs.productScore * 50000 + gs.users * 50);
 
-  // Morale decay / recovery
+  // Morale
   if (gs.salaries > 0 && gs.cash < 0) gs.morale = Math.max(0, gs.morale - 15);
   else if (net > 0) gs.morale = Math.min(100, gs.morale + 2);
   else gs.morale = Math.max(0, gs.morale - 1);
 
-  // Natural churn improvement with support staff
   const supportCount = gs.team['support'] || 0;
   gs.churn = Math.max(0.01, 0.05 - supportCount * 0.005 - gs.productScore * 0.0002);
 
-  // Log financials
   const monthLabel = MONTHS[(gs.month - 1) % 12] + ' Y' + Math.ceil(gs.month / 12);
   financialHistory.push({ month: monthLabel, revenue: gs.revenue, salaries: gs.salaries, ops: gs.opsCost, net, cash: gs.cash });
   cashHistory.push(gs.cash);
   userHistory.push(gs.users);
 
   log(`Month ${gs.month}: Revenue $${fmt(gs.revenue)}, Net ${net >= 0 ? '+' : ''}$${fmt(net)}`, net >= 0 ? 'good' : 'bad');
+}
+
+function processRivals() {
+  gs.rivals.forEach(rival => {
+    if (rival.dormant) return;
+    const growth = rival.productScore * 0.5 * rival.aggressiveness * (0.7 + Math.random() * 0.6);
+    rival.users = Math.floor(Math.max(0, rival.users + growth) * 0.96);
+    rival.productScore += 0.1;
+
+    // Reaction trigger
+    if (gs.users > rival.users * 2 && !rival.raisedSeries && Math.random() < 0.25) {
+      rival.raisedSeries = true;
+      rival.aggressiveness *= 1.5;
+      rival.users = Math.floor(rival.users * 1.4);
+      rival.funding *= 3;
+      const ev = EVENTS_POOL.find(e => e.id === 'rival_reaction');
+      if (ev && !pendingEvents.some(e => e.id === 'rival_reaction')) {
+        const cloned = { ...ev, body: `${rival.name} just raised a massive emergency round in response to your growth. Their aggressiveness is surging.`, choices: ev.choices.map(c => ({...c})) };
+        pendingEvents.push(cloned);
+        updateEventBadge();
+      }
+      toast(`⚠️ ${rival.name} raised emergency funding — they're coming for you!`, 'bad');
+      log(`Rival ${rival.name} raised series: +40% users, 1.5x aggression`, 'bad');
+    }
+  });
+}
+
+function checkMilestones() {
+  MILESTONES.forEach(m => {
+    if (gs.milestonesDone.includes(m.id)) return;
+    if (m.check(gs)) {
+      gs.milestonesDone.push(m.id);
+      m.reward(gs);
+    }
+  });
 }
 
 function getTotalSalesPts() {
@@ -656,8 +799,11 @@ function getTotalProductPts() {
 function generateEvent() {
   if (Math.random() < 0.7) {
     const pool = EVENTS_POOL.filter(e => {
-      if (e.id === 'acquisition' && (gs.valuation < 2000000 || gs.month < 12)) return false;
-      if (e.id === 'enterprise' && !gs.activeFeatures.includes('enterprise')) return false;
+      if (e.id === 'acquisition' && (!gs.acquisitionEnabled && (gs.valuation < 2000000 || gs.month < 12))) return false;
+      if (e.id === 'cofounder_dispute') return false; // fired by system
+      if (e.id === 'board_pressure_meeting') return false; // fired by system
+      if (e.id === 'burnout_crisis') return false; // fired by system
+      if (e.id === 'rival_reaction') return false; // fired by system
       return true;
     });
     const ev = pool[Math.floor(Math.random() * pool.length)];
@@ -675,17 +821,21 @@ function resolveEvent(eventId, choiceIdx) {
   choice.effect(gs);
   log(`Event: "${ev.title}" — chose: ${choice.label}`, ev.type);
   pendingEvents.splice(idx, 1);
-  if (pendingEvents.length === 0) {
-    document.getElementById('event-badge').style.display = 'none';
-  } else {
-    document.getElementById('event-badge').textContent = pendingEvents.length;
-  }
+  updateEventBadge();
   if (gs.acquired) { endGame('win', 'acquisition'); return; }
   renderAll();
 }
 
+function updateEventBadge() {
+  if (pendingEvents.length === 0) {
+    document.getElementById('event-badge').style.display = 'none';
+  } else {
+    document.getElementById('event-badge').textContent = pendingEvents.length;
+    document.getElementById('event-badge').style.display = 'inline';
+  }
+}
+
 function checkWinLose() {
-  const runway = getRunwayMonths();
   if (gs.cash < 0 && gs.revenue < gs.salaries + gs.opsCost) {
     endGame('lose');
   } else if (gs.valuation >= 1e9) {
@@ -704,33 +854,17 @@ function getRunwayMonths() {
 function endGame(result, reason) {
   showScreen('endscreen');
   if (result === 'win') {
-    let title = '';
-    let body = '';
-    if (reason === 'unicorn') { title = '🦄 Unicorn!'; body = `${gs.companyName} is now valued at over $1 billion. You built a unicorn startup from nothing!`; }
+    let title = '', body = '';
+    if (reason === 'unicorn') { title = '🦄 Unicorn!'; body = `${gs.companyName} is now valued at over $1 billion. You built a unicorn!`; }
     else if (reason === 'ipo') { title = '🎉 IPO Success!'; body = `${gs.companyName} went public on the NASDAQ. You rang the opening bell!`; }
     else if (reason === 'acquisition') { title = '💰 Acquired!'; body = `${gs.companyName} was acquired! You closed a life-changing deal.`; }
     document.getElementById('end-title').style.color = 'var(--green)';
     document.getElementById('end-title').textContent = title;
-    document.getElementById('end-body').innerHTML = `
-      ${body}<br><br>
-      <strong>Final Stats:</strong><br>
-      Month reached: ${gs.month}<br>
-      Users: ${fmtNum(gs.users)}<br>
-      Revenue: $${fmt(gs.revenue)}/mo<br>
-      Valuation: $${fmtLarge(gs.valuation)}<br>
-      Equity retained: ${gs.equity.toFixed(1)}%
-    `;
+    document.getElementById('end-body').innerHTML = `${body}<br><br><strong>Final Stats:</strong><br>Month reached: ${gs.month}<br>Users: ${fmtNum(gs.users)}<br>Revenue: $${fmt(gs.revenue)}/mo<br>Valuation: $${fmtLarge(gs.valuation)}<br>Equity retained: ${gs.equity.toFixed(1)}%<br>Milestones: ${gs.milestonesDone.length}/${MILESTONES.length}`;
   } else {
     document.getElementById('end-title').style.color = 'var(--red)';
     document.getElementById('end-title').textContent = '💀 Startup Dead';
-    document.getElementById('end-body').innerHTML = `
-      ${gs.companyName} ran out of runway. It happens to the best of us.<br><br>
-      <strong>Postmortem:</strong><br>
-      Survived: ${gs.month} months<br>
-      Peak users: ${fmtNum(Math.max(...userHistory))}<br>
-      Cash at death: $${fmt(gs.cash)}<br>
-      Product score: ${gs.productScore}
-    `;
+    document.getElementById('end-body').innerHTML = `${gs.companyName} ran out of runway. It happens to the best of us.<br><br><strong>Postmortem:</strong><br>Survived: ${gs.month} months<br>Peak users: ${fmtNum(Math.max(...userHistory))}<br>Cash at death: $${fmt(gs.cash)}<br>Product score: ${gs.productScore}<br>Milestones hit: ${gs.milestonesDone.length}/${MILESTONES.length}`;
   }
 }
 
@@ -748,7 +882,7 @@ function raise(roundId) {
   const round = FUNDING_ROUNDS.find(r => r.id === roundId);
   if (!round) return;
   if (gs.raisedRounds.includes(roundId)) { toast('Already raised this round!', 'bad'); return; }
-  if (gs.productScore < round.minScore) { toast(`Need product score ≥ ${round.minScore} for ${round.name}`, 'bad'); return; }
+  if (gs.productScore < round.minScore) { toast(`Need product score >= ${round.minScore} for ${round.name}`, 'bad'); return; }
   if (gs.month < round.minMonth) { toast(`Too early — need to be in month ${round.minMonth}+`, 'bad'); return; }
   const dilution = round.equity;
   gs.equity = gs.equity * (1 - dilution / 100);
@@ -756,6 +890,7 @@ function raise(roundId) {
   gs.raisedRounds.push(roundId);
   log(`Raised ${round.name}: +$${fmtLarge(round.amount)} (${dilution}% dilution)`, 'good');
   toast(`💸 ${round.name} closed! +$${fmtLarge(round.amount)}`, 'good');
+  checkMilestones();
   renderAll();
 }
 
@@ -815,6 +950,7 @@ function renderAll() {
   renderMarket();
   renderFinancials();
   renderFundraise();
+  renderGoals();
   renderEvents();
 }
 
@@ -846,20 +982,41 @@ function renderDashboard() {
   document.getElementById('runway-fill').style.width = runwayPct + '%';
   document.getElementById('runway-fill').style.background = runwayColor;
 
+  // Pressure bars
+  let pbHTML = '';
+  if (gs.technicalDebt > 30) {
+    const pct = gs.technicalDebt;
+    const cls = gs.technicalDebt > 60 ? 'danger' : 'warn';
+    pbHTML += `<div class="pressure-bar-wrap ${cls}">
+      <div class="pressure-bar-header"><span>⚠️ Technical Debt</span><span style="color:${gs.technicalDebt>60?'var(--red)':'var(--yellow)'}">${gs.technicalDebt.toFixed(0)}/100${gs.technicalDebt>60?' — penalising growth & product':''}</span></div>
+      <div class="pressure-bar-track"><div class="pressure-bar-fill" style="width:${pct}%;background:${gs.technicalDebt>60?'var(--red)':'var(--yellow)'}"></div></div>
+    </div>`;
+  }
+  if (gs.boardPressureActive) {
+    const pct = gs.boardPressure;
+    const cls = gs.boardPressure > 60 ? 'danger' : '';
+    pbHTML += `<div class="pressure-bar-wrap ${cls}">
+      <div class="pressure-bar-header"><span>👔 Board Pressure</span><span style="color:${gs.boardPressure>60?'var(--red)':'var(--muted)'}">${gs.boardPressure.toFixed(0)}/100${gs.boardPressure>80?' — BOARD MEETING CALLED!':''}</span></div>
+      <div class="pressure-bar-track"><div class="pressure-bar-fill" style="width:${pct}%;background:${gs.boardPressure>60?'var(--red)':'var(--accent)'}"></div></div>
+    </div>`;
+  }
+  document.getElementById('pressure-bars').innerHTML = pbHTML;
+
+  const net = gs.revenue - gs.salaries - gs.opsCost;
   const kpiData = [
     { title: 'Monthly Revenue', val: '$' + fmt(gs.revenue), sub: 'ARR: $' + fmtLarge(gs.revenue * 12), color: 'var(--green)' },
     { title: 'Gross Burn', val: '$' + fmt(gs.salaries + gs.opsCost), sub: 'Salaries + Ops', color: 'var(--red)' },
-    { title: 'Net / Month', val: (gs.revenue - gs.salaries - gs.opsCost >= 0 ? '+' : '-') + '$' + fmt(Math.abs(gs.revenue - gs.salaries - gs.opsCost)), sub: gs.revenue - gs.salaries - gs.opsCost >= 0 ? 'Profitable' : 'Burning cash', color: gs.revenue - gs.salaries - gs.opsCost >= 0 ? 'var(--green)' : 'var(--red)' },
+    { title: 'Net / Month', val: (net >= 0 ? '+' : '-') + '$' + fmt(Math.abs(net)), sub: net >= 0 ? 'Profitable' : 'Burning cash', color: net >= 0 ? 'var(--green)' : 'var(--red)' },
     { title: 'Cash Balance', val: '$' + fmt(gs.cash), sub: 'In the bank', color: gs.cash < 30000 ? 'var(--red)' : 'var(--text)' },
     { title: 'Active Users', val: fmtNum(gs.users), sub: `Churn: ${(gs.churn*100).toFixed(1)}%/mo`, color: 'var(--accent)' },
-    { title: 'Product Score', val: gs.productScore, sub: 'Features & quality', color: 'var(--yellow)' },
+    { title: 'Product Score', val: gs.productScore.toFixed(1), sub: 'Features & quality', color: 'var(--yellow)' },
     { title: 'Valuation', val: '$' + fmtLarge(gs.valuation), sub: 'Estimated', color: 'var(--yellow)' },
     { title: 'Team Size', val: Object.values(gs.team).reduce((a,b)=>a+b,0), sub: `Morale: ${gs.morale}%`, color: 'var(--text)' },
-    { title: 'Market Share', val: ((gs.users / gs.industry.tam) * 100).toFixed(4) + '%', sub: 'TAM penetration', color: 'var(--accent)' },
+    { title: 'Profit Streak', val: gs.profitableMonths + ' mo', sub: gs.profitableMonths >= 6 ? '⚠️ Market intensifying' : gs.profitableMonths >= 3 ? 'Rivals reacting' : 'Keep it going', color: gs.profitableMonths >= 3 ? 'var(--yellow)' : 'var(--green)' },
+    { title: 'Milestones', val: gs.milestonesDone.length + '/' + MILESTONES.length, sub: 'Goals completed', color: 'var(--accent)' },
   ];
 
-  const grid = document.getElementById('kpi-grid');
-  grid.innerHTML = kpiData.map(k => `
+  document.getElementById('kpi-grid').innerHTML = kpiData.map(k => `
     <div class="kpi-card">
       <div class="kpi-title">${k.title}</div>
       <div class="kpi-val" style="color:${k.color}">${k.val}</div>
@@ -869,7 +1026,6 @@ function renderDashboard() {
   drawLineChart('cash-chart', cashHistory, 'var(--accent)');
   drawLineChart('user-chart', userHistory, 'var(--green)');
 
-  // Feed
   const feedEl = document.getElementById('feed-list');
   feedEl.innerHTML = [...activityLog].reverse().slice(0, 20).map(item =>
     `<div class="feed-item"><span class="feed-tag ${item.type}">${item.type}</span>${item.msg}</div>`
@@ -878,17 +1034,13 @@ function renderDashboard() {
 
 function renderTeam() {
   document.getElementById('payroll-tag').textContent = `Payroll: $${fmt(gs.salaries)}/mo`;
-  const grid = document.getElementById('role-grid');
-  grid.innerHTML = ROLES.map(role => {
+  document.getElementById('role-grid').innerHTML = ROLES.map(role => {
     const count = gs.team[role.id] || 0;
     const canHire = !role.maxCount || count < role.maxCount;
     return `
     <div class="role-card">
       <div class="role-header">
-        <div>
-          <div class="role-name">${role.name}</div>
-          <div style="color:var(--muted);font-size:12px;margin-top:2px">${role.desc}</div>
-        </div>
+        <div><div class="role-name">${role.name}</div><div style="color:var(--muted);font-size:12px;margin-top:2px">${role.desc}</div></div>
         <div class="role-emoji">${role.emoji}</div>
       </div>
       <div class="role-stat"><span class="role-stat-label">Salary</span><span>$${fmt(role.salary)}/mo</span></div>
@@ -906,14 +1058,31 @@ function renderTeam() {
   moraleBar.style.width = gs.morale + '%';
   moraleBar.style.background = gs.morale > 60 ? 'var(--green)' : gs.morale > 30 ? 'var(--yellow)' : 'var(--red)';
   document.getElementById('morale-label').textContent = `${gs.morale}% — ${gs.morale > 70 ? 'Team is pumped!' : gs.morale > 40 ? 'Some tension...' : 'Team is burning out!'}`;
-  const faces = gs.morale > 70 ? '😄😄😄' : gs.morale > 40 ? '😐😐' : '😰';
-  document.getElementById('morale-faces').textContent = faces;
+  document.getElementById('morale-faces').textContent = gs.morale > 70 ? '😄😄😄' : gs.morale > 40 ? '😐😐' : '😰';
+
+  document.getElementById('team-extra-stats').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:8px">
+      <div class="kpi-card">
+        <div class="kpi-title">Co-founder Morale</div>
+        <div class="kpi-val" style="color:${gs.cofounderMorale>60?'var(--green)':gs.cofounderMorale>30?'var(--yellow)':'var(--red)'}">${gs.cofounderMorale}%</div>
+        <div class="kpi-sub">${gs.cofounderMorale > 70 ? 'Aligned & motivated' : gs.cofounderMorale > 40 ? 'Some friction...' : '⚠️ Dispute risk!'}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Burnout Risk</div>
+        <div class="kpi-val" style="color:${gs.burnoutRisk>60?'var(--red)':gs.burnoutRisk>30?'var(--yellow)':'var(--green)'}">${gs.burnoutRisk.toFixed(0)}/100</div>
+        <div class="kpi-sub">${gs.burnoutRisk > 70 ? '🔥 Crisis imminent!' : gs.burnoutRisk > 40 ? 'Worrying trend' : 'Team healthy'}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Technical Debt</div>
+        <div class="kpi-val" style="color:${gs.technicalDebt>60?'var(--red)':gs.technicalDebt>30?'var(--yellow)':'var(--green)'}">${gs.technicalDebt.toFixed(0)}/100</div>
+        <div class="kpi-sub">${gs.technicalDebt > 60 ? '⚠️ Growth penalised' : gs.technicalDebt > 30 ? 'Accumulating debt' : 'Codebase healthy'}</div>
+      </div>
+    </div>`;
 }
 
 function renderProduct() {
-  document.getElementById('product-score-tag').textContent = `Score: ${gs.productScore}`;
-  const grid = document.getElementById('feature-grid');
-  grid.innerHTML = FEATURES.map(f => {
+  document.getElementById('product-score-tag').textContent = `Score: ${gs.productScore.toFixed(1)}`;
+  document.getElementById('feature-grid').innerHTML = FEATURES.map(f => {
     const unlocked = gs.activeFeatures.includes(f.id);
     const inProgress = gs.pendingFeature && gs.pendingFeature.id === f.id;
     const reqsMet = f.requires.every(r => gs.activeFeatures.includes(r));
@@ -929,8 +1098,7 @@ function renderProduct() {
       ${f.requires.length ? `<div style="font-size:11px;color:var(--muted);margin-bottom:8px">Requires: ${reqNames}</div>` : ''}
       <div class="feature-cost">Cost: ${f.cost === 0 ? 'Free' : '$' + fmt(f.cost)} · Time: ${f.time === 0 ? 'Instant' : f.time + ' months'} · Score: +${f.score}</div>
       <div class="feature-progress"><div class="feature-progress-fill" style="width:${progress}%"></div></div>
-      <button class="btn sm" onclick="investFeature('${f.id}')"
-        ${unlocked || inProgress || locked || gs.pendingFeature ? 'disabled style="opacity:.4"' : ''}>
+      <button class="btn sm" onclick="investFeature('${f.id}')" ${unlocked || inProgress || locked || gs.pendingFeature ? 'disabled style="opacity:.4"' : ''}>
         ${unlocked ? 'Completed' : inProgress ? 'In Progress...' : locked ? 'Locked' : 'Start Development'}
       </button>
     </div>`;
@@ -939,22 +1107,26 @@ function renderProduct() {
 
 function renderMarket() {
   const ind = gs.industry;
-  const competitors = [
-    { name: 'LeadCo', share: 35, color: 'var(--red)' },
-    { name: gs.companyName, share: Math.min(30, (gs.users / ind.tam) * 100 * 10000), color: 'var(--accent)' },
-    { name: 'GrowthHQ', share: 20, color: 'var(--yellow)' },
-    { name: 'Others', share: Math.max(10, 45 - (gs.users / ind.tam) * 100 * 10000), color: 'var(--muted)' },
+  const allPlayers = [
+    { name: gs.companyName, users: gs.users, color: 'var(--accent)', isPlayer: true },
+    ...gs.rivals.map(r => ({ name: r.name, users: r.users, color: r.emoji === '🔴' ? 'var(--red)' : r.emoji === '🟡' ? 'var(--yellow)' : 'var(--green)', isPlayer: false, rival: r }))
   ];
+  const maxUsers = Math.max(...allPlayers.map(p => p.users), 1);
+
+  const rivalWarnings = gs.rivals.filter(r => r.raisedSeries).map(r =>
+    `<div style="background:rgba(239,71,111,.1);border:1px solid var(--red);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--red);margin-bottom:8px">⚠️ ${r.name} just raised emergency funding — aggressiveness x1.5!</div>`
+  ).join('');
 
   const grid = document.getElementById('market-grid');
   grid.innerHTML = `
-    <div class="market-card">
-      <div class="market-title">Market Share</div>
-      ${competitors.map(c => `
+    <div class="market-card" style="grid-column:1/-1">
+      <div class="market-title">User Count Comparison</div>
+      ${rivalWarnings}
+      ${allPlayers.map(p => `
         <div class="bar-row">
-          <span class="bar-label">${c.name}</span>
-          <div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,c.share)}%;background:${c.color}"></div></div>
-          <span class="bar-val">${c.share.toFixed(1)}%</span>
+          <span class="bar-label" style="color:${p.isPlayer ? 'var(--text)' : 'var(--muted)'};font-weight:${p.isPlayer?'700':'400'}">${p.name}${p.isPlayer?' (You)':''}</span>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,(p.users/maxUsers)*100)}%;background:${p.color}"></div></div>
+          <span class="bar-val">${fmtNum(p.users)}</span>
         </div>`).join('')}
     </div>
     <div class="market-card">
@@ -964,20 +1136,39 @@ function renderMarket() {
       <div class="role-stat"><span class="role-stat-label">Your Users</span><span>${fmtNum(gs.users)}</span></div>
       <div class="role-stat"><span class="role-stat-label">Your Revenue</span><span>$${fmt(gs.revenue)}/mo</span></div>
       <div class="role-stat"><span class="role-stat-label">Churn Rate</span><span>${(gs.churn*100).toFixed(1)}%/mo</span></div>
-      <div class="role-stat"><span class="role-stat-label">Product Score</span><span>${gs.productScore}</span></div>
+      <div class="role-stat"><span class="role-stat-label">Product Score</span><span>${gs.productScore.toFixed(1)}</span></div>
+    </div>
+    <div class="market-card">
+      <div class="market-title">Rival Intelligence</div>
+      ${gs.rivals.map(r => `
+        <div class="rival-card ${r.raisedSeries ? 'raised' : ''}">
+          <div class="rival-header">
+            <span class="rival-name">${r.emoji} ${r.name}</span>
+            <div class="rival-badges">
+              ${r.raisedSeries ? '<span class="tag" style="background:rgba(239,71,111,.15);color:var(--red)">FUNDED</span>' : ''}
+              ${r.dormant ? '<span class="tag" style="background:rgba(136,146,164,.1);color:var(--muted)">DORMANT</span>' : ''}
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-size:12px">
+            <div><div style="color:var(--muted)">Users</div><div style="font-weight:700">${fmtNum(r.users)}</div></div>
+            <div><div style="color:var(--muted)">Prod Score</div><div style="font-weight:700">${r.productScore.toFixed(1)}</div></div>
+            <div><div style="color:var(--muted)">Aggression</div><div style="font-weight:700;color:${r.aggressiveness>1.3?'var(--red)':r.aggressiveness>1?'var(--yellow)':'var(--green)'}">${r.aggressiveness.toFixed(2)}x</div></div>
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--muted)">Funding: $${fmtLarge(r.funding)}</div>
+        </div>`).join('')}
     </div>
     <div class="market-card">
       <div class="market-title">Growth Drivers</div>
-      <div class="bar-row"><span class="bar-label">Product</span><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,gs.productScore)}%;background:var(--yellow)"></div></div><span class="bar-val">${gs.productScore}</span></div>
+      <div class="bar-row"><span class="bar-label">Product</span><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,gs.productScore)}%;background:var(--yellow)"></div></div><span class="bar-val">${gs.productScore.toFixed(1)}</span></div>
       <div class="bar-row"><span class="bar-label">Sales</span><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,getTotalSalesPts()*5)}%;background:var(--green)"></div></div><span class="bar-val">${getTotalSalesPts().toFixed(0)}</span></div>
       <div class="bar-row"><span class="bar-label">Morale</span><div class="bar-track"><div class="bar-fill" style="width:${gs.morale}%;background:var(--accent)"></div></div><span class="bar-val">${gs.morale}%</span></div>
       <div class="bar-row"><span class="bar-label">Inv. Interest</span><div class="bar-track"><div class="bar-fill" style="width:${gs.investorInterest||0}%;background:var(--accent2)"></div></div><span class="bar-val">${(gs.investorInterest||0).toFixed(0)}%</span></div>
+      <div class="bar-row"><span class="bar-label">Tech Debt</span><div class="bar-track"><div class="bar-fill" style="width:${gs.technicalDebt}%;background:${gs.technicalDebt>60?'var(--red)':'var(--yellow)'}"></div></div><span class="bar-val">${gs.technicalDebt.toFixed(0)}</span></div>
     </div>`;
 }
 
 function renderFinancials() {
-  const tbody = document.getElementById('fin-tbody');
-  tbody.innerHTML = [...financialHistory].reverse().slice(0, 24).map(row => `
+  document.getElementById('fin-tbody').innerHTML = [...financialHistory].reverse().slice(0, 24).map(row => `
     <tr>
       <td>${row.month}</td>
       <td class="pos">$${fmt(row.revenue)}</td>
@@ -987,7 +1178,6 @@ function renderFinancials() {
       <td>$${fmt(row.cash)}</td>
     </tr>`).join('') || '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:20px">No history yet.</td></tr>';
 
-  // P&L summary
   document.getElementById('pl-summary').innerHTML = `
     <div class="role-stat"><span class="role-stat-label">Monthly Revenue</span><span class="pos">$${fmt(gs.revenue)}</span></div>
     <div class="role-stat"><span class="role-stat-label">Salaries</span><span class="neg">−$${fmt(gs.salaries)}</span></div>
@@ -1006,8 +1196,7 @@ function renderFinancials() {
 }
 
 function renderFundraise() {
-  const optEl = document.getElementById('raise-options');
-  optEl.innerHTML = FUNDING_ROUNDS.map(round => {
+  document.getElementById('raise-options').innerHTML = FUNDING_ROUNDS.map(round => {
     const raised = gs.raisedRounds.includes(round.id);
     const canRaise = gs.productScore >= round.minScore && gs.month >= round.minMonth && !raised;
     const scoreOk = gs.productScore >= round.minScore;
@@ -1036,6 +1225,24 @@ function renderFundraise() {
     }).join('')}
     <div class="role-stat" style="font-weight:700"><span class="role-stat-label">Valuation</span><span style="color:var(--yellow)">$${fmtLarge(gs.valuation)}</span></div>
   `;
+}
+
+function renderGoals() {
+  document.getElementById('goals-grid').innerHTML = MILESTONES.map(m => {
+    const done = gs.milestonesDone.includes(m.id);
+    const inProgress = !done && m.check(gs); // about to complete
+    return `
+    <div class="goal-card ${done ? 'done' : ''}">
+      <div class="goal-title">
+        <span style="font-size:1.2rem">${m.emoji}</span>
+        ${done ? '<span style="color:var(--green)">✓</span>' : ''}
+        ${m.title}
+      </div>
+      <div class="goal-hint" style="color:${done?'var(--green)':inProgress?'var(--yellow)':'var(--muted)'}">
+        ${done ? 'Completed!' : m.hint}
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function renderEvents() {
@@ -1090,7 +1297,6 @@ function drawLineChart(canvasId, data, color) {
   const grad2 = ctx.createLinearGradient(0, 0, 0, H);
   grad2.addColorStop(0, hexColor + '44');
   grad2.addColorStop(1, hexColor + '00');
-
   ctx.beginPath();
   ctx.moveTo(pts[0].x, H - pad);
   pts.forEach(p => ctx.lineTo(p.x, p.y));
@@ -1098,15 +1304,12 @@ function drawLineChart(canvasId, data, color) {
   ctx.closePath();
   ctx.fillStyle = grad2;
   ctx.fill();
-
   ctx.beginPath();
   ctx.moveTo(pts[0].x, pts[0].y);
   pts.forEach(p => ctx.lineTo(p.x, p.y));
   ctx.strokeStyle = hexColor;
   ctx.lineWidth = 2;
   ctx.stroke();
-
-  // Axis labels
   ctx.fillStyle = '#8892a4';
   ctx.font = '10px system-ui';
   ctx.fillText(fmtSmall(max), 2, pad + 4);
@@ -1122,7 +1325,6 @@ function drawBarChart(canvasId, data) {
   const pad = 20;
   const barW = Math.max(4, (W - pad * 2) / data.length / 2.5);
   const maxVal = Math.max(...data.map(d => Math.max(d.revenue, d.salaries + d.ops)), 1);
-
   data.forEach((d, i) => {
     const x = pad + i * ((W - pad * 2) / data.length);
     const revH = (d.revenue / maxVal) * (H - pad * 2);
@@ -1132,7 +1334,6 @@ function drawBarChart(canvasId, data) {
     ctx.fillStyle = '#ef476f88';
     ctx.fillRect(x + barW + 2, H - pad - burnH, barW, burnH);
   });
-
   ctx.fillStyle = '#8892a4';
   ctx.font = '10px system-ui';
   ctx.fillText('$' + fmtSmall(maxVal), 2, pad + 4);
@@ -1147,9 +1348,7 @@ function fmt(n) { return Math.floor(Math.abs(n)).toLocaleString(); }
 function fmtNum(n) { if (n >= 1e6) return (n/1e6).toFixed(1)+'M'; if (n >= 1e3) return (n/1e3).toFixed(1)+'K'; return n.toString(); }
 function fmtLarge(n) { if (n >= 1e9) return (n/1e9).toFixed(2)+'B'; if (n >= 1e6) return (n/1e6).toFixed(1)+'M'; if (n >= 1e3) return (n/1e3).toFixed(0)+'K'; return n.toFixed(0); }
 function fmtSmall(n) { if (n >= 1e6) return (n/1e6).toFixed(1)+'M'; if (n >= 1e3) return (n/1e3).toFixed(0)+'K'; return Math.floor(n).toString(); }
-
 function log(msg, type='info') { activityLog.push({ msg, type, month: gs ? gs.month : 0 }); }
-
 function toast(msg, type='info') {
   const el = document.createElement('div');
   el.className = `toast ${type}`;
@@ -1157,12 +1356,10 @@ function toast(msg, type='info') {
   document.getElementById('toast-container').appendChild(el);
   setTimeout(() => el.remove(), 4000);
 }
-
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
-
 function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
