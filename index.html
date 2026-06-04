@@ -1075,13 +1075,6 @@ function drawLineChart(canvasId, data, color) {
     x: pad + (i / (data.length - 1)) * (W - pad * 2),
     y: H - pad - ((v - min) / range) * (H - pad * 2)
   }));
-  // Gradient fill
-  const grad = ctx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0, color.replace(')', ', 0.3)').replace('var(', 'rgba(').replace(/[a-z-]+\)/, c => {
-    const map = { 'var(--accent)': 'rgba(108,99,255,0.3)', 'var(--green)': 'rgba(67,217,173,0.3)', 'var(--yellow)': 'rgba(255,209,102,0.3)', 'var(--red)': 'rgba(239,71,111,0.3)' };
-    return '';
-  }));
-  // Simpler gradient
   const colorMap = { 'var(--accent)': '#6c63ff', 'var(--green)': '#43d9ad', 'var(--yellow)': '#ffd166', 'var(--red)': '#ef476f' };
   const hexColor = colorMap[color] || '#6c63ff';
   const grad2 = ctx.createLinearGradient(0, 0, 0, H);
