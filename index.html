@@ -571,11 +571,6 @@ function startGame() {
 // ═══════════════════════════════════════════════════════
 
 function nextTurn() {
-  if (pendingEvents.length > 0) {
-    showPanel('events');
-    toast('Resolve pending events first!', 'bad');
-    return;
-  }
   if (gs.pendingFeature) {
     // tick feature progress
     const f = FEATURES.find(x => x.id === gs.pendingFeature.id);
@@ -598,7 +593,6 @@ function nextTurn() {
   if (pendingEvents.length > 0) {
     document.getElementById('event-badge').textContent = pendingEvents.length;
     document.getElementById('event-badge').style.display = 'inline';
-    toast(`⚡ ${pendingEvents.length} new event(s) require attention!`, 'info');
   }
 }
 
