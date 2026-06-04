@@ -235,12 +235,16 @@
         <span class="metric-value" id="hdr-cash"></span>
       </div>
       <div class="metric">
-        <span class="metric-label">Burn/mo</span>
+        <span class="metric-label">Gross Burn</span>
         <span class="metric-value red" id="hdr-burn"></span>
       </div>
       <div class="metric">
         <span class="metric-label">Revenue/mo</span>
         <span class="metric-value green" id="hdr-rev"></span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Net/mo</span>
+        <span class="metric-value" id="hdr-net"></span>
       </div>
       <div class="metric">
         <span class="metric-label">Users</span>
@@ -821,8 +825,13 @@ function renderTopbar() {
   document.getElementById('hdr-turn').textContent = `${monthName} Y${year} · Month ${gs.month}`;
   document.getElementById('hdr-cash').textContent = '$' + fmt(gs.cash);
   document.getElementById('hdr-cash').className = 'metric-value' + (gs.cash < 20000 ? ' red' : gs.cash < 50000 ? ' yellow' : '');
-  document.getElementById('hdr-burn').textContent = '$' + fmt(Math.max(0, gs.salaries + gs.opsCost - gs.revenue));
+  const grossBurn = gs.salaries + gs.opsCost;
+  const netPerMonth = gs.revenue - grossBurn;
+  document.getElementById('hdr-burn').textContent = '$' + fmt(grossBurn);
   document.getElementById('hdr-rev').textContent = '$' + fmt(gs.revenue);
+  const netEl = document.getElementById('hdr-net');
+  netEl.textContent = (netPerMonth >= 0 ? '+' : '-') + '$' + fmt(Math.abs(netPerMonth));
+  netEl.className = 'metric-value' + (netPerMonth >= 0 ? ' green' : ' red');
   document.getElementById('hdr-users').textContent = fmtNum(gs.users);
   document.getElementById('hdr-val').textContent = '$' + fmtLarge(gs.valuation);
 }
@@ -839,7 +848,8 @@ function renderDashboard() {
 
   const kpiData = [
     { title: 'Monthly Revenue', val: '$' + fmt(gs.revenue), sub: 'ARR: $' + fmtLarge(gs.revenue * 12), color: 'var(--green)' },
-    { title: 'Monthly Burn', val: '$' + fmt(gs.salaries + gs.opsCost), sub: 'Salaries + Ops', color: 'var(--red)' },
+    { title: 'Gross Burn', val: '$' + fmt(gs.salaries + gs.opsCost), sub: 'Salaries + Ops', color: 'var(--red)' },
+    { title: 'Net / Month', val: (gs.revenue - gs.salaries - gs.opsCost >= 0 ? '+' : '-') + '$' + fmt(Math.abs(gs.revenue - gs.salaries - gs.opsCost)), sub: gs.revenue - gs.salaries - gs.opsCost >= 0 ? 'Profitable' : 'Burning cash', color: gs.revenue - gs.salaries - gs.opsCost >= 0 ? 'var(--green)' : 'var(--red)' },
     { title: 'Cash Balance', val: '$' + fmt(gs.cash), sub: 'In the bank', color: gs.cash < 30000 ? 'var(--red)' : 'var(--text)' },
     { title: 'Active Users', val: fmtNum(gs.users), sub: `Churn: ${(gs.churn*100).toFixed(1)}%/mo`, color: 'var(--accent)' },
     { title: 'Product Score', val: gs.productScore, sub: 'Features & quality', color: 'var(--yellow)' },
@@ -1133,7 +1143,7 @@ function drawBarChart(canvasId, data) {
 //  HELPERS
 // ═══════════════════════════════════════════════════════
 
-function fmt(n) { return Math.abs(Math.floor(n)).toLocaleString(); }
+function fmt(n) { return Math.floor(Math.abs(n)).toLocaleString(); }
 function fmtNum(n) { if (n >= 1e6) return (n/1e6).toFixed(1)+'M'; if (n >= 1e3) return (n/1e3).toFixed(1)+'K'; return n.toString(); }
 function fmtLarge(n) { if (n >= 1e9) return (n/1e9).toFixed(2)+'B'; if (n >= 1e6) return (n/1e6).toFixed(1)+'M'; if (n >= 1e3) return (n/1e3).toFixed(0)+'K'; return n.toFixed(0); }
 function fmtSmall(n) { if (n >= 1e6) return (n/1e6).toFixed(1)+'M'; if (n >= 1e3) return (n/1e3).toFixed(0)+'K'; return Math.floor(n).toString(); }
